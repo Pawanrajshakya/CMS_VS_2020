@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Persistence_Layer.Models
 {
-    public class User
+    public class User: Audit
     {
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
@@ -12,7 +12,8 @@ namespace Persistence_Layer.Models
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
         public string Gender { get; set; }
-        public bool? IsActive { get; set; }
         public string Email { get; set; }
+        public Role Role { get; set; }
+        public int RoleId { get; set; }
     }
 }
