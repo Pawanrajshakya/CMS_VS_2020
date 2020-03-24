@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Persistence_Layer.Interfaces;
@@ -15,8 +16,6 @@ namespace Persistence_Layer.Models
         [Key]
         public int AccountNo { get; set; }
 
-        [ForeignKey("ClientId")]
-        public Client Client { get; set; }
         public int ClientId { get; set; }
         public string Name { get; set; }
         public decimal Balance { get; private set; }
@@ -47,13 +46,15 @@ namespace Persistence_Layer.Models
         public string State { get; set; }
         [MaxLength(20)]
         public string ZipCode { get; set; }
-        [ForeignKey("RelationshipId")]
+        // [ForeignKey("RelationshipId")]
+        // public Relationship Relationship { get; set; }
         public Relationship Relationship { get; set; }
-        public int RelationshipId { get; set; }
+        public int RelationshipId { get; set; } //Relationship with main account
         #endregion
         public decimal UpdateBalance(ITransaction Transaction)
         {
             return Balance;
         }
+        public List<Transaction> Transactions { get; set; }
     }
 }

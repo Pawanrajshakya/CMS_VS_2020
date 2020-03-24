@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -13,7 +14,6 @@ namespace Persistence_Layer.Models
         public byte[] PasswordSalt { get; set; }
         public string Gender { get; set; }
         public string Email { get; set; }
-        public Role Role { get; set; }
-        public int RoleId { get; set; }
+        public List<UserRole> UserRole { get; set; }
     }
 }
