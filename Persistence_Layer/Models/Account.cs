@@ -46,15 +46,10 @@ namespace Persistence_Layer.Models
         public string State { get; set; }
         [MaxLength(20)]
         public string ZipCode { get; set; }
-        // [ForeignKey("RelationshipId")]
-        // public Relationship Relationship { get; set; }
         public Relationship Relationship { get; set; }
         public int RelationshipId { get; set; } //Relationship with main account
         #endregion
-        public decimal UpdateBalance(ITransaction Transaction)
-        {
-            return Balance;
-        }
         public List<Transaction> Transactions { get; set; }
+        public int Order { get; set; }
     }
 }

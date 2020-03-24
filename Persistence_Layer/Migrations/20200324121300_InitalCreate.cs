@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Persistence_Layer.Migrations
 {
-    public partial class InitalCreate_1 : Migration
+    public partial class InitalCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,7 +20,8 @@ namespace Persistence_Layer.Migrations
                     IsVisible = table.Column<bool>(nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
                     RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true),
-                    Description = table.Column<string>(nullable: true)
+                    Description = table.Column<string>(nullable: true),
+                    Order = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -90,27 +91,6 @@ namespace Persistence_Layer.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Roles", x => x.RoleId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TransactionTypes",
-                columns: table => new
-                {
-                    Type = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    CreatedBy = table.Column<int>(nullable: false),
-                    CreatedDate = table.Column<DateTime>(nullable: false),
-                    LastModifiedBy = table.Column<int>(nullable: false),
-                    LastModifiedDate = table.Column<DateTime>(nullable: false),
-                    IsVisible = table.Column<bool>(nullable: false),
-                    IsActive = table.Column<bool>(nullable: false),
-                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true),
-                    Description = table.Column<string>(maxLength: 255, nullable: false),
-                    Mode = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TransactionTypes", x => x.Type);
                 });
 
             migrationBuilder.CreateTable(
@@ -215,7 +195,8 @@ namespace Persistence_Layer.Migrations
                     Address2 = table.Column<string>(maxLength: 255, nullable: true),
                     State = table.Column<string>(maxLength: 2, nullable: true),
                     ZipCode = table.Column<string>(maxLength: 20, nullable: true),
-                    RelationshipId = table.Column<int>(nullable: false)
+                    RelationshipId = table.Column<int>(nullable: false),
+                    Order = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -237,6 +218,33 @@ namespace Persistence_Layer.Migrations
                         column: x => x.RelationshipId,
                         principalTable: "Relationships",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TransactionTypes",
+                columns: table => new
+                {
+                    Type = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CreatedBy = table.Column<int>(nullable: false),
+                    CreatedDate = table.Column<DateTime>(nullable: false),
+                    LastModifiedBy = table.Column<int>(nullable: false),
+                    LastModifiedDate = table.Column<DateTime>(nullable: false),
+                    IsVisible = table.Column<bool>(nullable: false),
+                    IsActive = table.Column<bool>(nullable: false),
+                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true),
+                    Description = table.Column<string>(maxLength: 255, nullable: false),
+                    AccountNo = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TransactionTypes", x => x.Type);
+                    table.ForeignKey(
+                        name: "FK_TransactionTypes_Account_AccountNo",
+                        column: x => x.AccountNo,
+                        principalTable: "Account",
+                        principalColumn: "AccountNo",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -308,6 +316,11 @@ namespace Persistence_Layer.Migrations
                 column: "TranType");
 
             migrationBuilder.CreateIndex(
+                name: "IX_TransactionTypes_AccountNo",
+                table: "TransactionTypes",
+                column: "AccountNo");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserRole_RoleId",
                 table: "UserRole",
                 column: "RoleId");
@@ -322,9 +335,6 @@ namespace Persistence_Layer.Migrations
                 name: "UserRole");
 
             migrationBuilder.DropTable(
-                name: "Account");
-
-            migrationBuilder.DropTable(
                 name: "TransactionTypes");
 
             migrationBuilder.DropTable(
@@ -332,6 +342,9 @@ namespace Persistence_Layer.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Account");
 
             migrationBuilder.DropTable(
                 name: "AccountTypes");

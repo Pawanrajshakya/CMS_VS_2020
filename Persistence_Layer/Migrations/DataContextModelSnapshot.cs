@@ -83,6 +83,9 @@ namespace Persistence_Layer.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("Order")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Phone")
                         .HasColumnType("TEXT")
                         .HasMaxLength(12);
@@ -142,6 +145,9 @@ namespace Persistence_Layer.Migrations
                     b.Property<DateTime>("LastModifiedDate")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("INTEGER");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
@@ -409,6 +415,9 @@ namespace Persistence_Layer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("AccountNo")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("CreatedBy")
                         .HasColumnType("INTEGER");
 
@@ -434,15 +443,14 @@ namespace Persistence_Layer.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Mode")
-                        .HasColumnType("INTEGER");
-
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("BLOB");
 
                     b.HasKey("Type");
+
+                    b.HasIndex("AccountNo");
 
                     b.ToTable("TransactionTypes");
                 });
@@ -554,6 +562,15 @@ namespace Persistence_Layer.Migrations
                     b.HasOne("Persistence_Layer.Models.TransactionType", "TransactionType")
                         .WithMany()
                         .HasForeignKey("TranType")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Persistence_Layer.Models.TransactionType", b =>
+                {
+                    b.HasOne("Persistence_Layer.Models.Account", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountNo")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
