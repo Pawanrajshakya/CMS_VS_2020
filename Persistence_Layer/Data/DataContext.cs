@@ -7,7 +7,7 @@ namespace Persistence_Layer.Data
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-
+            
         }
 
         // public DbSet<Value> Values { get; set; }
@@ -19,6 +19,7 @@ namespace Persistence_Layer.Data
         public DbSet<Relationship> Relationships { get; set; }
         public DbSet<TransactionType> TransactionTypes { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Group> Groups { get; set; }
 
 protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

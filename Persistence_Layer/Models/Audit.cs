@@ -6,11 +6,21 @@ namespace Persistence_Layer.Models
 {
     public class Audit
     {
+        public Audit()
+        {
+            this.CreatedDate = DateTime.Now;
+            this.CreatedBy = 0;
+            this.LastModifiedDate = DateTime.Now;
+            this.LastModifiedBy = 0;
+            this.IsActive = true;
+            this.IsVisible = true;
+        }
+
         public int CreatedBy { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
         public int LastModifiedBy { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime LastModifiedDate { get; set; }
         public bool IsVisible { get; set; }
         public bool IsActive { get; set; }

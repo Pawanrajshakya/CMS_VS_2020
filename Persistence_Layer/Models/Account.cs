@@ -18,7 +18,8 @@ namespace Persistence_Layer.Models
 
         public int ClientId { get; set; }
         public string Name { get; set; }
-        public decimal Balance { get; private set; }
+        [DataType(DataType.Currency)]
+        public double Balance { get; private set; }
         [ForeignKey("AccountTypeId")]
         public AccountType AccountType { get; set; }
         [Required(ErrorMessage = "Account Type is required")]

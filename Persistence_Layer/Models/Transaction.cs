@@ -14,23 +14,19 @@ namespace Persistence_Layer.Models
         public DateTime TransactionDate { get; set; }
         [Range(1, 100000000,
         ErrorMessage = "Value for {0} must be between {1} and {2}.")]
-        public decimal Amount { get; set; }
+        public double Amount { get; set; }
         [MaxLength(255)]
         public string Description1 { get; set; }
         [MaxLength(255)]
         public string Description2 { get; set; }
 
-        [Required(ErrorMessage = "Transaction Type is required.")]
-        public int TranType { get; set; }
-
         [ForeignKey("TranType")]
         public TransactionType TransactionType { get; set; }
-
-        [Required(ErrorMessage = "Please select the contributor.")]
-        public int AccountNo { get; set; }
+        public int TranType { get; set; }
 
         [ForeignKey("AccountNo")]
         public Account Account { get; set; }
+        public int AccountNo { get; set; }
 
     }
 }
