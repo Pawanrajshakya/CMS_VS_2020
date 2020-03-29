@@ -45,7 +45,7 @@ namespace Web_API
             });
 
             services.AddCors();
-            services.AddAutoMapper(typeof(UserRepository));
+            services.AddAutoMapper(typeof(Startup));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

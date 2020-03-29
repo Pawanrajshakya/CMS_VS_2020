@@ -9,6 +9,8 @@ namespace Web_API.Helpers
         public AutoMapperProfiles()
         {
             CreateMap<User, UsersDto>();
+            CreateMap<Business, BusinessDto>();
+            CreateMap<BusinessDto, Business>();
         }
     }
 }

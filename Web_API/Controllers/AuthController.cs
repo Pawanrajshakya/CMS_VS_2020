@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -16,8 +17,8 @@ namespace Web_API.Controllers
     [ApiController]
     public class AuthController : BaseApiController
     {
-        public AuthController(IUnitOfWork unitOfWork, IConfiguration config)
-        : base(unitOfWork, config)
+        public AuthController(IUnitOfWork unitOfWork, IConfiguration config, IMapper mapper)
+        : base(unitOfWork, config, mapper)
         {
         }
 
@@ -39,11 +40,13 @@ namespace Web_API.Controllers
                     UserRole = new System.Collections.Generic.List<UserRole>()
                 };
 
-                foreach (var userRole in userForRegisterDto.UserRole)
+                if (userForRegisterDto.UserRole.Length > 0)
                 {
-                    userToCreate.UserRole.Add(new UserRole { RoleId = userRole });
+                    foreach (var userRole in userForRegisterDto.UserRole)
+                    {
+                        userToCreate.UserRole.Add(new UserRole { RoleId = userRole });
+                    }
                 }
-
                 var createdUser = _unitOfWork.User.Register(userToCreate, userForRegisterDto.Password);
 
                 if (_unitOfWork.Complete() > 0)

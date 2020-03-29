@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Persistence_Layer.Interfaces;
@@ -11,10 +12,12 @@ namespace Web_API.Controllers
     {
         protected readonly IUnitOfWork _unitOfWork;
         protected readonly IConfiguration _config;
-        public BaseApiController(IUnitOfWork unitOfWork, IConfiguration config)
+        protected readonly IMapper _mapper;
+        public BaseApiController(IUnitOfWork unitOfWork, IConfiguration config, IMapper mapper)
         {
             this._config = config;
             this._unitOfWork = unitOfWork;
+            this._mapper = mapper;
         }
 
         protected IActionResult GetModalStateMessage()
@@ -35,6 +38,7 @@ namespace Web_API.Controllers
 
             return BadRequest(stringBuilder.ToString());
         }
+
 
         protected IActionResult HandleException(Exception exception)
         {

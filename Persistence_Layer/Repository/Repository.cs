@@ -5,6 +5,7 @@ using Persistence_Layer.Interfaces;
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Persistence_Layer.Repository
 {
@@ -32,16 +33,16 @@ namespace Persistence_Layer.Repository
             _dbContext.Entry(entity).State = EntityState.Modified;
         }
 
-        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
+        public async Task<IEnumerable<TEntity>> Find(Expression<Func<TEntity, bool>> predicate)
         {
             return _dbContext.Set<TEntity>().Where(predicate);
         }
 
-        public IEnumerable<TEntity> GetAll()
+        public async Task<IEnumerable<TEntity>> GetAll()
         {
             try
             {
-                return _dbContext.Set<TEntity>().ToList();
+                return await _dbContext.Set<TEntity>().ToListAsync();
             }
             catch (Exception e)
             {
@@ -49,9 +50,9 @@ namespace Persistence_Layer.Repository
             }
         }
 
-        public TEntity Get(int id)
+        public async Task<TEntity> Get(int id)
         {
-            return _dbContext.Set<TEntity>().Find(id);
+            return await _dbContext.Set<TEntity>().FindAsync(id);
         }
 
         public void Remove(TEntity entity)
