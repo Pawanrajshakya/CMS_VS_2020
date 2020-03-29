@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Persistence_Layer\Persistence_Layer.csproj" />
+    <ProjectReference Include="..\Service_Layer\Service_Layer.csproj" />
   </ItemGroup>
 
   <ItemGroup>
