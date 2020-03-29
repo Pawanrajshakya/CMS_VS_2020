@@ -33,7 +33,7 @@ namespace Persistence_Layer.Repository
             _dbContext.Entry(entity).State = EntityState.Modified;
         }
 
-        public async Task<IEnumerable<TEntity>> Find(Expression<Func<TEntity, bool>> predicate)
+        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
         {
             return _dbContext.Set<TEntity>().Where(predicate);
         }
