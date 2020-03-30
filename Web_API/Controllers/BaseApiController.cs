@@ -1,7 +1,6 @@
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Persistence_Layer.Interfaces;
+using Service_Layer.Interface;
 using System;
 using System.Linq;
 using System.Text;
@@ -10,14 +9,12 @@ namespace Web_API.Controllers
 {
     public class BaseApiController : ControllerBase
     {
-        protected readonly IUnitOfWork _unitOfWork;
+        protected readonly IServiceManager _service;
         protected readonly IConfiguration _config;
-        protected readonly IMapper _mapper;
-        public BaseApiController(IUnitOfWork unitOfWork, IConfiguration config, IMapper mapper)
+        public BaseApiController(IServiceManager service, IConfiguration config)
         {
             this._config = config;
-            this._unitOfWork = unitOfWork;
-            this._mapper = mapper;
+            this._service = service;
         }
 
         protected IActionResult GetModalStateMessage()

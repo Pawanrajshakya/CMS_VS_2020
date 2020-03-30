@@ -1,10 +1,8 @@
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Persistence_Layer.Interfaces;
-using Persistence_Layer.Models;
-using Web_API.Dtos;
+using Service_Layer.Dtos;
+using Service_Layer.Interface;
 
 namespace Web_API.Controllers
 {
@@ -12,7 +10,7 @@ namespace Web_API.Controllers
     [ApiController]
     public class BusinessController : BaseApiController
     {
-        public BusinessController(IUnitOfWork unitOfWork, IConfiguration config, IMapper mapper) : base(unitOfWork, config, mapper)
+        public BusinessController(IServiceManager service, IConfiguration config) : base(service, config)
         {
         }
 
@@ -21,13 +19,10 @@ namespace Web_API.Controllers
         {
             try
             {
-                var businesses = await this._unitOfWork.Business.GetAll();
+                var businesses = await _service.Business.GetAll();
 
                 if (businesses != null)
-                {
-
                     return Ok(businesses);
-                }
 
                 return BadRequest();
             }
@@ -42,13 +37,10 @@ namespace Web_API.Controllers
         {
             try
             {
-                var business = await this._unitOfWork.Business.Get(id);
+                var business = await _service.Business.Get(id);
 
                 if (business != null)
-                {
-                    BusinessDto businessDto = _mapper.Map<BusinessDto>(business);
-                    return Ok(businessDto);
-                }
+                    return Ok(business);
 
                 return BadRequest();
             }
@@ -63,16 +55,7 @@ namespace Web_API.Controllers
         {
             try
             {
-                if (await _unitOfWork.Business.BusinessExists(businessDto.Name))
-                {
-                    return BadRequest("Name already exists.");
-                }
-
-                Business businessToSave = _mapper.Map<Business>(businessDto);
-
-                _unitOfWork.Business.Add(businessToSave);
-
-                if (_unitOfWork.Complete() > 0)
+                if (await _service.Business.Add(businessDto))
                     return StatusCode(201);
                 else
                     return BadRequest();
@@ -88,29 +71,10 @@ namespace Web_API.Controllers
         {
             try
             {
-                var businessToPatch = await this._unitOfWork.Business.Get(id);
-
-                if (businessToPatch == null)
-                {
+                if (await _service.Business.Update(id, businessDto))
                     return BadRequest();
-                }
 
-                //businessToPatch = _mapper.Map<Business>(businessDto).RowVersion.;
-
-                businessToPatch.Address1 = businessDto.Address1;
-                businessToPatch.Address2 = businessDto.Address2;
-                businessToPatch.Description = businessDto.Description;
-                businessToPatch.Name = businessDto.Name;
-                businessToPatch.ZipCode = businessDto.ZipCode;
-                businessToPatch.State = businessDto.State;
-                businessToPatch.IsActive = businessDto.IsActive;
-
-                _unitOfWork.Business.Update(businessToPatch);
-
-                if (_unitOfWork.Complete() > 0)
-                    return Ok();
-                else
-                    return BadRequest();
+                return Ok();
             }
             catch (System.Exception e)
             {
@@ -123,19 +87,10 @@ namespace Web_API.Controllers
         {
             try
             {
-                var businessToDelete = await this._unitOfWork.Business.Get(id);
-
-                if (businessToDelete == null)
-                {
-                    return BadRequest();
-                }
-
-                this._unitOfWork.Business.Remove(businessToDelete);
-
-                if (_unitOfWork.Complete() > 0)
+                if (await _service.Business.Remove(id))
                     return Ok();
-                else
-                    return BadRequest();
+
+                return BadRequest();
             }
             catch (System.Exception e)
             {
@@ -148,19 +103,10 @@ namespace Web_API.Controllers
         {
             try
             {
-                var business = await this._unitOfWork.Business.Get(id);
-
-                if (business == null)
-                {
-                    return BadRequest();
-                }
-                business.IsVisible = false;
-                this._unitOfWork.Business.Update(business);
-
-                if (_unitOfWork.Complete() > 0)
+                if (await _service.Business.SoftDelete(id))
                     return Ok();
-                else
-                    return BadRequest();
+
+                return BadRequest();
             }
             catch (System.Exception e)
             {

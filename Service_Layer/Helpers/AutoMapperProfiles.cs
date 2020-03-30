@@ -1,16 +1,16 @@
 using AutoMapper;
 using Persistence_Layer.Models;
-using Web_API.Dtos;
+using Service_Layer.Dtos;
 
-namespace Web_API.Helpers
+namespace Service_Layer.Helpers
 {
     public class AutoMapperProfiles : Profile
     {
         public AutoMapperProfiles()
         {
             CreateMap<User, UsersDto>();
-            CreateMap<Business, BusinessDto>();
-            CreateMap<BusinessDto, Business>();
+            CreateMap<Persistence_Layer.Models.Business, BusinessDto>();
+            CreateMap<Service_Layer.Dtos.BusinessDto, Persistence_Layer.Models.Business>();
         }
     }
 }

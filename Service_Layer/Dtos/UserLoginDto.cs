@@ -1,4 +1,4 @@
-namespace Web_API.Dtos
+namespace Service_Layer.Dtos
 {
     public class UserLoginDto
     {

@@ -21,6 +21,8 @@ using Microsoft.IdentityModel.Tokens;
 using Persistence_Layer.Data;
 using Persistence_Layer.Interfaces;
 using Persistence_Layer.Repository;
+using Service_Layer.Interface;
+using Service_Layer.Services;
 using Web_API.Helpers;
 
 namespace Web_API
@@ -45,8 +47,10 @@ namespace Web_API
             });
 
             services.AddCors();
-            services.AddAutoMapper(typeof(Startup));
+            services.AddAutoMapper(typeof(IBusinessService));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IServiceManager, ServiceManager>();
+            services.AddScoped<IBusinessService, BusinessService>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
