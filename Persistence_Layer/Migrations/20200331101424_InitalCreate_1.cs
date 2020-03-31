@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Persistence_Layer.Migrations
 {
-    public partial class InitalCreate : Migration
+    public partial class InitalCreate_1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,12 +20,12 @@ namespace Persistence_Layer.Migrations
                     IsVisible = table.Column<bool>(nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
                     RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true),
-                    Name = table.Column<string>(maxLength: 255, nullable: false),
-                    Address1 = table.Column<string>(maxLength: 255, nullable: false),
-                    Address2 = table.Column<string>(maxLength: 255, nullable: false),
-                    State = table.Column<string>(maxLength: 2, nullable: false),
-                    ZipCode = table.Column<string>(maxLength: 5, nullable: false),
-                    Description = table.Column<string>(maxLength: 255, nullable: false)
+                    Name = table.Column<string>(maxLength: 255, nullable: true),
+                    Address1 = table.Column<string>(maxLength: 255, nullable: true),
+                    Address2 = table.Column<string>(maxLength: 255, nullable: true),
+                    State = table.Column<string>(maxLength: 2, nullable: true),
+                    ZipCode = table.Column<string>(maxLength: 5, nullable: true),
+                    Description = table.Column<string>(maxLength: 255, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -36,14 +36,21 @@ namespace Persistence_Layer.Migrations
                 name: "Groups",
                 columns: table => new
                 {
-                    GroupId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedBy = table.Column<int>(nullable: false),
+                    CreatedDate = table.Column<DateTime>(nullable: false),
+                    LastModifiedBy = table.Column<int>(nullable: false),
+                    LastModifiedDate = table.Column<DateTime>(nullable: false),
+                    IsVisible = table.Column<bool>(nullable: false),
+                    IsActive = table.Column<bool>(nullable: false),
+                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true),
                     Description = table.Column<string>(nullable: false),
                     Order = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Groups", x => x.GroupId);
+                    table.PrimaryKey("PK_Groups", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -70,7 +77,7 @@ namespace Persistence_Layer.Migrations
                 name: "Roles",
                 columns: table => new
                 {
-                    RoleId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedBy = table.Column<int>(nullable: false),
                     CreatedDate = table.Column<DateTime>(nullable: false),
@@ -83,14 +90,14 @@ namespace Persistence_Layer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Roles", x => x.RoleId);
+                    table.PrimaryKey("PK_Roles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedBy = table.Column<int>(nullable: false),
                     CreatedDate = table.Column<DateTime>(nullable: false),
@@ -107,14 +114,14 @@ namespace Persistence_Layer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.UserId);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Clients",
                 columns: table => new
                 {
-                    ClientId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedBy = table.Column<int>(nullable: false),
                     CreatedDate = table.Column<DateTime>(nullable: false),
@@ -128,7 +135,7 @@ namespace Persistence_Layer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Clients", x => x.ClientId);
+                    table.PrimaryKey("PK_Clients", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Clients_Businesses_BusinessId",
                         column: x => x.BusinessId,
@@ -141,7 +148,7 @@ namespace Persistence_Layer.Migrations
                 name: "AccountTypes",
                 columns: table => new
                 {
-                    TypeId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedBy = table.Column<int>(nullable: false),
                     CreatedDate = table.Column<DateTime>(nullable: false),
@@ -156,12 +163,12 @@ namespace Persistence_Layer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AccountTypes", x => x.TypeId);
+                    table.PrimaryKey("PK_AccountTypes", x => x.Id);
                     table.ForeignKey(
                         name: "FK_AccountTypes_Groups_GroupId",
                         column: x => x.GroupId,
                         principalTable: "Groups",
-                        principalColumn: "GroupId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -179,13 +186,13 @@ namespace Persistence_Layer.Migrations
                         name: "FK_UserRole_Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Roles",
-                        principalColumn: "RoleId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UserRole_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "UserId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -193,7 +200,7 @@ namespace Persistence_Layer.Migrations
                 name: "Account",
                 columns: table => new
                 {
-                    AccountNo = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedBy = table.Column<int>(nullable: false),
                     CreatedDate = table.Column<DateTime>(nullable: false),
@@ -202,14 +209,15 @@ namespace Persistence_Layer.Migrations
                     IsVisible = table.Column<bool>(nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
                     RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true),
+                    AccountNo = table.Column<string>(nullable: true),
                     ClientId = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    Balance = table.Column<double>(nullable: false),
+                    Balance = table.Column<decimal>(nullable: false),
                     AccountTypeId = table.Column<int>(nullable: false),
                     IsMain = table.Column<bool>(nullable: false),
-                    FirstName = table.Column<string>(maxLength: 255, nullable: false),
+                    FirstName = table.Column<string>(maxLength: 255, nullable: true),
                     MiddleName = table.Column<string>(maxLength: 50, nullable: true),
-                    LastName = table.Column<string>(maxLength: 255, nullable: false),
+                    LastName = table.Column<string>(maxLength: 255, nullable: true),
                     Phone = table.Column<string>(maxLength: 12, nullable: true),
                     Email = table.Column<string>(maxLength: 55, nullable: true),
                     Address1 = table.Column<string>(maxLength: 255, nullable: true),
@@ -221,18 +229,18 @@ namespace Persistence_Layer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Account", x => x.AccountNo);
+                    table.PrimaryKey("PK_Account", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Account_AccountTypes_AccountTypeId",
                         column: x => x.AccountTypeId,
                         principalTable: "AccountTypes",
-                        principalColumn: "TypeId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Account_Clients_ClientId",
                         column: x => x.ClientId,
                         principalTable: "Clients",
-                        principalColumn: "ClientId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Account_Relationships_RelationshipId",
@@ -246,7 +254,7 @@ namespace Persistence_Layer.Migrations
                 name: "TransactionTypes",
                 columns: table => new
                 {
-                    TranType = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedBy = table.Column<int>(nullable: false),
                     CreatedDate = table.Column<DateTime>(nullable: false),
@@ -255,17 +263,17 @@ namespace Persistence_Layer.Migrations
                     IsVisible = table.Column<bool>(nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
                     RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true),
-                    Description = table.Column<string>(maxLength: 255, nullable: false),
-                    AccountNo = table.Column<int>(nullable: false)
+                    Description = table.Column<string>(nullable: true),
+                    AccountId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TransactionTypes", x => x.TranType);
+                    table.PrimaryKey("PK_TransactionTypes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TransactionTypes_Account_AccountNo",
-                        column: x => x.AccountNo,
+                        name: "FK_TransactionTypes_Account_AccountId",
+                        column: x => x.AccountId,
                         principalTable: "Account",
-                        principalColumn: "AccountNo",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -283,26 +291,26 @@ namespace Persistence_Layer.Migrations
                     IsActive = table.Column<bool>(nullable: false),
                     RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true),
                     TransactionDate = table.Column<DateTime>(nullable: false),
-                    Amount = table.Column<double>(nullable: false),
+                    Amount = table.Column<decimal>(nullable: false),
                     Description1 = table.Column<string>(maxLength: 255, nullable: true),
                     Description2 = table.Column<string>(maxLength: 255, nullable: true),
-                    TranType = table.Column<int>(nullable: false),
-                    AccountNo = table.Column<int>(nullable: false)
+                    TransactionTypeId = table.Column<int>(nullable: false),
+                    AccountId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Transactions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Transactions_Account_AccountNo",
-                        column: x => x.AccountNo,
+                        name: "FK_Transactions_Account_AccountId",
+                        column: x => x.AccountId,
                         principalTable: "Account",
-                        principalColumn: "AccountNo",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Transactions_TransactionTypes_TranType",
-                        column: x => x.TranType,
+                        name: "FK_Transactions_TransactionTypes_TransactionTypeId",
+                        column: x => x.TransactionTypeId,
                         principalTable: "TransactionTypes",
-                        principalColumn: "TranType",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -332,19 +340,19 @@ namespace Persistence_Layer.Migrations
                 column: "BusinessId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transactions_AccountNo",
+                name: "IX_Transactions_AccountId",
                 table: "Transactions",
-                column: "AccountNo");
+                column: "AccountId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transactions_TranType",
+                name: "IX_Transactions_TransactionTypeId",
                 table: "Transactions",
-                column: "TranType");
+                column: "TransactionTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TransactionTypes_AccountNo",
+                name: "IX_TransactionTypes_AccountId",
                 table: "TransactionTypes",
-                column: "AccountNo");
+                column: "AccountId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserRole_RoleId",

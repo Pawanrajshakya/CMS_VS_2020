@@ -1,45 +1,116 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Service_Layer.Dtos;
 using Service_Layer.Interface;
 
 namespace Web_API.Controllers
 {
 
-    public class RoleController 
+    public class RoleController : BaseApiController
     {
-        // public RoleController(IUnitOfWork unitOfWork, IConfiguration config, IMapper mapper) : base(unitOfWork, config, mapper)
-        // {
-        // }
+        public RoleController(IServiceManager service, IConfiguration config) : base(service, config)
+        {
+        }
 
-        // [HttpPost("post")]
-        // public async Task<IActionResult> Post(RoleForNew role)
-        // {
-        //     try
-        //     {
-        //         if (string.IsNullOrWhiteSpace(role.Description))
-        //             return BadRequest("Invalid role.");
+        [HttpGet("get")]
+        public async Task<IActionResult> Get()
+        {
+            try
+            {
+                var roles = await _serviceManager.Role.GetAll();
 
-        //         if (await _unitOfWork.Role.RoleExists(role.Description))
-        //         {
-        //             return BadRequest("Role already exists.");
-        //         }
+                if (roles != null)
+                    return Ok(roles);
 
-        //         Role roleToSave = new Role{
-        //             Description = role.Description
-        //         };
+                return BadRequest();
+            }
+            catch (System.Exception e)
+            {
+                return HandleException(e);
+            }
+        }
 
-        //         _unitOfWork.Role.Add(roleToSave);
+        [HttpGet("get/{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            try
+            {
+                var role = await _serviceManager.Role.Get(id);
 
-        //         if (_unitOfWork.Complete() > 0)
-        //             return StatusCode(201);
-        //         else
-        //             return BadRequest();
-        //     }
-        //     catch (System.Exception e)
-        //     {
-        //         return HandleException(e);
-        //     }
-        // }
+                if (role != null)
+                    return Ok(role);
 
+                return BadRequest();
+            }
+            catch (System.Exception e)
+            {
+                return HandleException(e);
+            }
+        }
+
+        [HttpPost("post")]
+        public async Task<IActionResult> Post(RoleDto roleDto)
+        {
+            try
+            {
+                if (await _serviceManager.Role.Add(roleDto))
+                    return StatusCode(201);
+                else
+                    return BadRequest();
+            }
+            catch (System.Exception e)
+            {
+                return HandleException(e);
+            }
+        }
+
+        [HttpPatch("patch/{id}")]
+        public async Task<IActionResult> Patch(int id, RoleDto roleDto)
+        {
+            try
+            {
+                if (await _serviceManager.Role.Update(id, roleDto))
+                    return BadRequest();
+
+                return Ok();
+            }
+            catch (System.Exception e)
+            {
+                return HandleException(e);
+            }
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                if (await _serviceManager.Role.Remove(id))
+                    return Ok();
+
+                return BadRequest();
+            }
+            catch (System.Exception e)
+            {
+                return HandleException(e);
+            }
+        }
+
+        [HttpPost("softdelete/{id}")]
+        public async Task<IActionResult> SoftDelete(int id)
+        {
+            try
+            {
+                if (await _serviceManager.Role.SoftDelete(id))
+                    return Ok();
+
+                return BadRequest();
+            }
+            catch (System.Exception e)
+            {
+                return HandleException(e);
+            }
+        }
     }
 }

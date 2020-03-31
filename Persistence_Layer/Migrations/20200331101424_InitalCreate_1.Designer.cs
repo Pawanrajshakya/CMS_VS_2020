@@ -10,8 +10,8 @@ using Persistence_Layer.Data;
 namespace Persistence_Layer.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200326133329_InitalCreate")]
-    partial class InitalCreate
+    [Migration("20200331101424_InitalCreate_1")]
+    partial class InitalCreate_1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,10 +23,13 @@ namespace Persistence_Layer.Migrations
 
             modelBuilder.Entity("Persistence_Layer.Models.Account", b =>
                 {
-                    b.Property<int>("AccountNo")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AccountNo")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("AccountTypeId")
                         .HasColumnType("int");
@@ -39,8 +42,8 @@ namespace Persistence_Layer.Migrations
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
 
-                    b.Property<double>("Balance")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
@@ -56,7 +59,6 @@ namespace Persistence_Layer.Migrations
                         .HasMaxLength(55);
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
 
@@ -76,7 +78,6 @@ namespace Persistence_Layer.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
 
@@ -110,7 +111,7 @@ namespace Persistence_Layer.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
 
-                    b.HasKey("AccountNo");
+                    b.HasKey("Id");
 
                     b.HasIndex("AccountTypeId");
 
@@ -123,7 +124,7 @@ namespace Persistence_Layer.Migrations
 
             modelBuilder.Entity("Persistence_Layer.Models.AccountType", b =>
                 {
-                    b.Property<int>("TypeId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -160,7 +161,7 @@ namespace Persistence_Layer.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.HasKey("TypeId");
+                    b.HasKey("Id");
 
                     b.HasIndex("GroupId");
 
@@ -175,12 +176,10 @@ namespace Persistence_Layer.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Address1")
-                        .IsRequired()
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
 
                     b.Property<string>("Address2")
-                        .IsRequired()
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
 
@@ -191,7 +190,6 @@ namespace Persistence_Layer.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
 
@@ -208,7 +206,6 @@ namespace Persistence_Layer.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
 
@@ -218,12 +215,10 @@ namespace Persistence_Layer.Migrations
                         .HasColumnType("rowversion");
 
                     b.Property<string>("State")
-                        .IsRequired()
                         .HasColumnType("nvarchar(2)")
                         .HasMaxLength(2);
 
                     b.Property<string>("ZipCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(5)")
                         .HasMaxLength(5);
 
@@ -234,7 +229,7 @@ namespace Persistence_Layer.Migrations
 
             modelBuilder.Entity("Persistence_Layer.Models.Client", b =>
                 {
-                    b.Property<int>("ClientId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -268,7 +263,7 @@ namespace Persistence_Layer.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.HasKey("ClientId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BusinessId");
 
@@ -277,19 +272,42 @@ namespace Persistence_Layer.Migrations
 
             modelBuilder.Entity("Persistence_Layer.Models.Group", b =>
                 {
-                    b.Property<int>("GroupId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsVisible")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("LastModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("LastModifiedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
-                    b.HasKey("GroupId");
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Groups");
                 });
@@ -336,7 +354,7 @@ namespace Persistence_Layer.Migrations
 
             modelBuilder.Entity("Persistence_Layer.Models.Role", b =>
                 {
-                    b.Property<int>("RoleId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -367,7 +385,7 @@ namespace Persistence_Layer.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.HasKey("RoleId");
+                    b.HasKey("Id");
 
                     b.ToTable("Roles");
                 });
@@ -379,11 +397,11 @@ namespace Persistence_Layer.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AccountNo")
+                    b.Property<int>("AccountId")
                         .HasColumnType("int");
 
-                    b.Property<double>("Amount")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
@@ -416,29 +434,29 @@ namespace Persistence_Layer.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<int>("TranType")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("TransactionDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("TransactionTypeId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountNo");
+                    b.HasIndex("AccountId");
 
-                    b.HasIndex("TranType");
+                    b.HasIndex("TransactionTypeId");
 
                     b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("Persistence_Layer.Models.TransactionType", b =>
                 {
-                    b.Property<int>("TranType")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AccountNo")
+                    b.Property<int>("AccountId")
                         .HasColumnType("int");
 
                     b.Property<int>("CreatedBy")
@@ -448,9 +466,7 @@ namespace Persistence_Layer.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -469,16 +485,16 @@ namespace Persistence_Layer.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.HasKey("TranType");
+                    b.HasKey("Id");
 
-                    b.HasIndex("AccountNo");
+                    b.HasIndex("AccountId");
 
                     b.ToTable("TransactionTypes");
                 });
 
             modelBuilder.Entity("Persistence_Layer.Models.User", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -521,7 +537,7 @@ namespace Persistence_Layer.Migrations
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("UserId");
+                    b.HasKey("Id");
 
                     b.ToTable("Users");
                 });
@@ -549,7 +565,7 @@ namespace Persistence_Layer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Persistence_Layer.Models.Client", null)
+                    b.HasOne("Persistence_Layer.Models.Client", "Client")
                         .WithMany("Accounts")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -582,13 +598,13 @@ namespace Persistence_Layer.Migrations
                 {
                     b.HasOne("Persistence_Layer.Models.Account", "Account")
                         .WithMany("Transactions")
-                        .HasForeignKey("AccountNo")
+                        .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Persistence_Layer.Models.TransactionType", "TransactionType")
                         .WithMany()
-                        .HasForeignKey("TranType")
+                        .HasForeignKey("TransactionTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -597,7 +613,7 @@ namespace Persistence_Layer.Migrations
                 {
                     b.HasOne("Persistence_Layer.Models.Account", "Account")
                         .WithMany()
-                        .HasForeignKey("AccountNo")
+                        .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

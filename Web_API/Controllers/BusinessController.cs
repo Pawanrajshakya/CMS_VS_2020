@@ -19,7 +19,7 @@ namespace Web_API.Controllers
         {
             try
             {
-                var businesses = await _service.Business.GetAll();
+                var businesses = await _serviceManager.Business.GetAll();
 
                 if (businesses != null)
                     return Ok(businesses);
@@ -37,7 +37,7 @@ namespace Web_API.Controllers
         {
             try
             {
-                var business = await _service.Business.Get(id);
+                var business = await _serviceManager.Business.Get(id);
 
                 if (business != null)
                     return Ok(business);
@@ -55,7 +55,7 @@ namespace Web_API.Controllers
         {
             try
             {
-                if (await _service.Business.Add(businessDto))
+                if (await _serviceManager.Business.Add(businessDto))
                     return StatusCode(201);
                 else
                     return BadRequest();
@@ -71,7 +71,7 @@ namespace Web_API.Controllers
         {
             try
             {
-                if (await _service.Business.Update(id, businessDto))
+                if (await _serviceManager.Business.Update(id, businessDto))
                     return BadRequest();
 
                 return Ok();
@@ -87,7 +87,7 @@ namespace Web_API.Controllers
         {
             try
             {
-                if (await _service.Business.Remove(id))
+                if (await _serviceManager.Business.Remove(id))
                     return Ok();
 
                 return BadRequest();
@@ -103,7 +103,7 @@ namespace Web_API.Controllers
         {
             try
             {
-                if (await _service.Business.SoftDelete(id))
+                if (await _serviceManager.Business.SoftDelete(id))
                     return Ok();
 
                 return BadRequest();

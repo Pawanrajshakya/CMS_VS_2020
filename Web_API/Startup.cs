@@ -1,26 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Persistence_Layer.Data;
 using Persistence_Layer.Interfaces;
-using Persistence_Layer.Repository;
 using Service_Layer.Interface;
 using Service_Layer.Services;
 using Web_API.Helpers;
@@ -51,6 +43,7 @@ namespace Web_API
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IServiceManager, ServiceManager>();
             services.AddScoped<IBusinessService, BusinessService>();
+            services.AddScoped<IRoleService, RoleService>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>

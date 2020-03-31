@@ -3,11 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Persistence_Layer.Models
 {
-    public class Group
+    public class Group : Audit
     {
-        [Key]
-        public int GroupId { get; set; }
-
         [Required]
         public string Description { get; set; }
 

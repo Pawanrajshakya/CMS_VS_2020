@@ -9,12 +9,12 @@ namespace Web_API.Controllers
 {
     public class BaseApiController : ControllerBase
     {
-        protected readonly IServiceManager _service;
+        protected readonly IServiceManager _serviceManager;
         protected readonly IConfiguration _config;
         public BaseApiController(IServiceManager service, IConfiguration config)
         {
             this._config = config;
-            this._service = service;
+            this._serviceManager = service;
         }
 
         protected IActionResult GetModalStateMessage()
