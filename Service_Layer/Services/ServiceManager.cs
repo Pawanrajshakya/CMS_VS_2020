@@ -4,10 +4,11 @@ namespace Service_Layer.Services
 {
     public class ServiceManager : IServiceManager
     {
-        public ServiceManager(IBusinessService business, IRoleService role)
+        public ServiceManager(IBusinessService business, IRoleService role, IUserService user)
         {
             this.Business = business;
             this.Role = role;
+            this.User = user;
         }
 
         public IBusinessService Business { get; private set; }

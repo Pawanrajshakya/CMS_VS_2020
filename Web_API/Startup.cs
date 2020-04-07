@@ -52,6 +52,7 @@ namespace Web_API
             services.AddScoped<IServiceManager, ServiceManager>();
             services.AddScoped<IBusinessService, BusinessService>();
             services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IUserService, UserService>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>

@@ -9,15 +9,13 @@ namespace Persistence_Layer.Interfaces
     {
         Task<TEntity> Get(int id);
         Task<IEnumerable<TEntity>> GetAll();
-        IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
-
+        IEnumerable<TEntity> FindAll(Expression<Func<TEntity, bool>> predicate);
+        Task<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
         void Add(TEntity entity);
         void AddRange(IEnumerable<TEntity> entities);
-
         void Remove(TEntity entity);
         void RemoveRange(IEnumerable<TEntity> entities);
-
         void Update(TEntity entity);
-
+        
     }
 }

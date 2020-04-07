@@ -17,10 +17,16 @@ namespace Service_Layer.Services
 
         public async Task<bool> Add(UserDto entity)
         {
+            byte[] passwordHash, passwordSalt;
+
             if (await _unitOfWork.User.UserExists(entity.Username))
                 throw new Exception("Name already exists.");
 
             User userToCreate = _mapper.Map<User>(entity);
+
+            CreatePasswordHash(entity.Password, out passwordHash, out passwordSalt);
+            userToCreate.PasswordHash = passwordHash;
+            userToCreate.PasswordSalt = passwordSalt;
 
             userToCreate.UserRole = new System.Collections.Generic.List<UserRole>();
 
@@ -106,6 +112,7 @@ namespace Service_Layer.Services
             entityToUpdate.IsActive = entity.IsActive;
             entityToUpdate.Gender = entity.Gender;
             entityToUpdate.Email = entity.Email;
+            entityToUpdate.Name = entity.Name;
 
             _unitOfWork.User.Update(entityToUpdate);
 
@@ -113,6 +120,43 @@ namespace Service_Layer.Services
                 return true;
 
             return false;
+        }
+        public async Task<UserDto> Login(string username, string password)
+        {
+            var user = await _unitOfWork.User.Find(x=>x.Username == username);
+
+            if (user == null)
+                return null;
+
+            if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+                return null;
+
+            UserDto userDto = _mapper.Map<UserDto>(user);
+
+            return userDto;
+        }
+
+        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
+            {
+                var ComputedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                for (int i = 0; i < ComputedHash.Length; i++)
+                {
+                    if (ComputedHash[i] != passwordHash[i])
+                        return false;
+                }
+                return true;
+            }
+        }
+
+        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
         }
     }
 }

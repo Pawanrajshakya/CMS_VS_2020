@@ -33,7 +33,7 @@ namespace Persistence_Layer.Repository
             _dbContext.Entry(entity).State = EntityState.Modified;
         }
 
-        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
+        public IEnumerable<TEntity> FindAll(Expression<Func<TEntity, bool>> predicate)
         {
             return _dbContext.Set<TEntity>().Where(predicate);
         }
@@ -63,6 +63,11 @@ namespace Persistence_Layer.Repository
         public void RemoveRange(IEnumerable<TEntity> entities)
         {
             _dbContext.Set<TEntity>().RemoveRange(entities);
+        }
+
+        public async Task<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
+        {
+            return await _dbContext.Set<TEntity>().FirstOrDefaultAsync(predicate);
         }
     }
 }

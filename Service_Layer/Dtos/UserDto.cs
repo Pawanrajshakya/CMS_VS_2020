@@ -11,6 +11,7 @@ namespace Service_Layer.Dtos
         [MinLength(8, ErrorMessage="Minimum length for password is 8")]
         public string Password { get; set; }
         [Required]
+        public string Name { get; set; }
         public string Gender { get; set; }
         public string Email { get; set; }
         public int[] UserRole { get; set; }
