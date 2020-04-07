@@ -15,14 +15,14 @@ namespace Service_Layer.Services
         {
         }
 
-        public async Task<bool> Add(RoleDto roleDto)
+        public async Task<bool> Add(RoleDto entity)
         {
-            if (await _unitOfWork.Role.RoleExists(roleDto.Description))
+            if (await _unitOfWork.Role.RoleExists(entity.Description))
             {
                 throw new Exception("Name already exists.");
             }
 
-            Role roleToSave = _mapper.Map<Role>(roleDto);
+            Role roleToSave = _mapper.Map<Role>(entity);
 
             _unitOfWork.Role.Add(roleToSave);
 
@@ -55,14 +55,14 @@ namespace Service_Layer.Services
 
         public async Task<bool> Remove(int id)
         {
-           var roleToDelete = await this._unitOfWork.Role.Get(id);
+           var entityToDelete = await this._unitOfWork.Role.Get(id);
 
-            if (roleToDelete == null)
+            if (entityToDelete == null)
             {
                 throw new Exception("Not Found.");
             }
 
-            this._unitOfWork.Role.Remove(roleToDelete);
+            this._unitOfWork.Role.Remove(entityToDelete);
 
             if (_unitOfWork.Complete() > 0)
                 return true;
@@ -87,15 +87,15 @@ namespace Service_Layer.Services
             return false;
         }
 
-        public async Task<bool> Update(int id, RoleDto roleDto)
+        public async Task<bool> Update(int id, RoleDto entity)
         {
             var roleToPatch = await this._unitOfWork.Role.Get(id);
 
             if (roleToPatch == null)
                 throw new Exception("Not Found.");
 
-            roleToPatch.Description = roleDto.Description;
-            roleToPatch.IsActive = roleDto.IsActive;
+            roleToPatch.Description = entity.Description;
+            roleToPatch.IsActive = entity.IsActive;
 
             _unitOfWork.Role.Update(roleToPatch);
 

@@ -5,7 +5,7 @@ namespace Service_Layer.Interface
 {
     public interface IService<T> where T : class
     {
-        Task<bool> Add(T Entity);
+        Task<bool> Add(T entity);
 
         Task<T> Get(int id);
 
@@ -15,6 +15,6 @@ namespace Service_Layer.Interface
 
         Task<bool> SoftDelete(int id);
 
-        Task<bool> Update(int id, T roleDto);
+        Task<bool> Update(int id, T entity);
     }
 }

@@ -9,6 +9,8 @@ namespace Service_Layer.Helpers
         public AutoMapperProfiles()
         {
             CreateMap<User, UsersDto>();
+            CreateMap<Role, RoleDto>();
+            CreateMap<RoleDto, Role>();
             CreateMap<Persistence_Layer.Models.Business, BusinessDto>();
             CreateMap<Service_Layer.Dtos.BusinessDto, Persistence_Layer.Models.Business>();
         }

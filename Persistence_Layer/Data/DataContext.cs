@@ -20,6 +20,7 @@ namespace Persistence_Layer.Data
         public DbSet<TransactionType> TransactionTypes { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<Account> Account { get; set; }
 
 protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

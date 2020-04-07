@@ -71,7 +71,7 @@ namespace Web_API.Controllers
         {
             try
             {
-                if (await _serviceManager.Business.Update(id, businessDto))
+                if (!await _serviceManager.Business.Update(id, businessDto))
                     return BadRequest();
 
                 return Ok();

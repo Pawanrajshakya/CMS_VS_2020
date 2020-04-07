@@ -15,17 +15,17 @@ namespace Service_Layer.Services
         {
         }
 
-        public async Task<bool> Add(BusinessDto businessDto)
+        public async Task<bool> Add(BusinessDto entity)
         {
 
-            if (await _unitOfWork.Business.BusinessExists(businessDto.Name))
+            if (await _unitOfWork.Business.BusinessExists(entity.Name))
             {
                 throw new Exception("Name already exists.");
             }
 
-            Business businessToSave = _mapper.Map<Business>(businessDto);
+            Business entityToSave = _mapper.Map<Business>(entity);
 
-            _unitOfWork.Business.Add(businessToSave);
+            _unitOfWork.Business.Add(entityToSave);
 
             if (_unitOfWork.Complete() > 0)
                 return true;
@@ -36,8 +36,8 @@ namespace Service_Layer.Services
 
         public async Task<BusinessDto> Get(int id)
         {
-            var business = await this._unitOfWork.Business.Get(id);
-            BusinessDto businessDto = _mapper.Map<BusinessDto>(business);
+            var entity = await this._unitOfWork.Business.Get(id);
+            BusinessDto businessDto = _mapper.Map<BusinessDto>(entity);
             return businessDto;
 
         }
@@ -88,20 +88,20 @@ namespace Service_Layer.Services
 
             return false;
         }
-        public async Task<bool> Update(int id, BusinessDto businessDto)
+        public async Task<bool> Update(int id, BusinessDto entity)
         {
             var businessToPatch = await this._unitOfWork.Business.Get(id);
 
             if (businessToPatch == null)
                 throw new Exception("Not Found.");
 
-            businessToPatch.Address1 = businessDto.Address1;
-            businessToPatch.Address2 = businessDto.Address2;
-            businessToPatch.Description = businessDto.Description;
-            businessToPatch.Name = businessDto.Name;
-            businessToPatch.ZipCode = businessDto.ZipCode;
-            businessToPatch.State = businessDto.State;
-            businessToPatch.IsActive = businessDto.IsActive;
+            businessToPatch.Address1 = entity.Address1;
+            businessToPatch.Address2 = entity.Address2;
+            businessToPatch.Description = entity.Description;
+            businessToPatch.Name = entity.Name;
+            businessToPatch.ZipCode = entity.ZipCode;
+            businessToPatch.State = entity.State;
+            businessToPatch.IsActive = entity.IsActive;
 
             _unitOfWork.Business.Update(businessToPatch);
 

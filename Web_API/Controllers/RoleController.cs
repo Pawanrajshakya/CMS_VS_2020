@@ -6,7 +6,8 @@ using Service_Layer.Interface;
 
 namespace Web_API.Controllers
 {
-
+    [Route("api/[controller]")]
+    [ApiController]
     public class RoleController : BaseApiController
     {
         public RoleController(IServiceManager service, IConfiguration config) : base(service, config)
@@ -70,7 +71,7 @@ namespace Web_API.Controllers
         {
             try
             {
-                if (await _serviceManager.Role.Update(id, roleDto))
+                if (!await _serviceManager.Role.Update(id, roleDto))
                     return BadRequest();
 
                 return Ok();
