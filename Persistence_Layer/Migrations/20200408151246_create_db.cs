@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Persistence_Layer.Migrations
 {
-    public partial class InitalCreate_1 : Migration
+    public partial class create_db : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -109,6 +109,7 @@ namespace Persistence_Layer.Migrations
                     Username = table.Column<string>(nullable: true),
                     PasswordHash = table.Column<byte[]>(nullable: true),
                     PasswordSalt = table.Column<byte[]>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
                     Gender = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true)
                 },
@@ -159,7 +160,7 @@ namespace Persistence_Layer.Migrations
                     RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true),
                     Description = table.Column<string>(nullable: true),
                     Order = table.Column<int>(nullable: false),
-                    GroupId = table.Column<int>(nullable: true)
+                    GroupId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -169,7 +170,7 @@ namespace Persistence_Layer.Migrations
                         column: x => x.GroupId,
                         principalTable: "Groups",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

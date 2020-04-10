@@ -1,8 +1,9 @@
 using Persistence_Layer.Models;
+using Service_Layer.Dtos;
 
 namespace Service_Layer.Interface
 {
-    public interface ITransactionTypeService : IService<TransactionType>
+    public interface ITransactionTypeService : IService<TransactionTypeDto>
     {
 
     }

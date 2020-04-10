@@ -10,8 +10,8 @@ using Persistence_Layer.Data;
 namespace Persistence_Layer.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200331101424_InitalCreate_1")]
-    partial class InitalCreate_1
+    [Migration("20200408151246_create_db")]
+    partial class create_db
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -138,7 +138,7 @@ namespace Persistence_Layer.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("GroupId")
+                    b.Property<int>("GroupId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
@@ -523,6 +523,9 @@ namespace Persistence_Layer.Migrations
                     b.Property<DateTime>("LastModifiedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<byte[]>("PasswordHash")
                         .HasColumnType("varbinary(max)");
 
@@ -580,9 +583,11 @@ namespace Persistence_Layer.Migrations
 
             modelBuilder.Entity("Persistence_Layer.Models.AccountType", b =>
                 {
-                    b.HasOne("Persistence_Layer.Models.Group", null)
+                    b.HasOne("Persistence_Layer.Models.Group", "Group")
                         .WithMany("AccountTypes")
-                        .HasForeignKey("GroupId");
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Persistence_Layer.Models.Client", b =>

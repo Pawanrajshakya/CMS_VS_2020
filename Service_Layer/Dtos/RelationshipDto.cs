@@ -2,12 +2,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Service_Layer.Dtos
 {
-    public class AccountTypeDto
+    public class RelationshipDto
     {
-        [Required(ErrorMessage="Description is required.")]
+        [Required]
         public string Description { get; set; }
-        public int Order { get; set; }
-        public int GroupId { get; set; }
         public bool IsActive { get; set; }
     }
 }

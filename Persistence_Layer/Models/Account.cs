@@ -6,11 +6,6 @@ namespace Persistence_Layer.Models
 {
     public class Account : Audit
     {
-        public Account()
-        {
-            IsVisible = true;
-            IsActive = true;
-        }
         
         public string AccountNo { get; set; }
 

@@ -24,7 +24,7 @@ namespace Web_API.Controllers
                 if (roles != null)
                     return Ok(roles);
 
-                return BadRequest();
+                return NotFound();
             }
             catch (System.Exception e)
             {

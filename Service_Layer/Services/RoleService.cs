@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Persistence_Layer.Interfaces;
@@ -19,12 +20,12 @@ namespace Service_Layer.Services
         {
             if (await _unitOfWork.Role.RoleExists(entity.Description))
             {
-                throw new Exception("Name already exists.");
+                throw new Exception("Already exists.");
             }
 
-            Role roleToSave = _mapper.Map<Role>(entity);
+            Role role = _mapper.Map<Role>(entity);
 
-            _unitOfWork.Role.Add(roleToSave);
+            _unitOfWork.Role.Add(role);
 
             if (_unitOfWork.Complete() > 0)
                 return true;
@@ -34,15 +35,17 @@ namespace Service_Layer.Services
 
         public async Task<RoleDto> Get(int id)
         {
-            var role = await this._unitOfWork.Role.Get(id);
-            RoleDto roleDto = _mapper.Map<RoleDto>(role);
+            var entity = await this._unitOfWork.Role.Get(id);
+            if (!entity.IsVisible)
+                return null;
+            RoleDto roleDto = _mapper.Map<RoleDto>(entity);
             return roleDto;
         }
 
         public async Task<IEnumerable<RoleDto>> GetAll()
         {
             List<RoleDto> roleDtos = new List<RoleDto>();
-            var roles = await this._unitOfWork.Role.GetAll();
+            var roles = (await this._unitOfWork.Role.GetAll()).Where(x => x.IsVisible);
             if (roles != null)
             {
                 foreach (var role in roles)
@@ -55,14 +58,14 @@ namespace Service_Layer.Services
 
         public async Task<bool> Remove(int id)
         {
-           var entityToDelete = await this._unitOfWork.Role.Get(id);
+            var role = await this._unitOfWork.Role.Get(id);
 
-            if (entityToDelete == null)
+            if (role == null)
             {
                 throw new Exception("Not Found.");
             }
 
-            this._unitOfWork.Role.Remove(entityToDelete);
+            this._unitOfWork.Role.Remove(role);
 
             if (_unitOfWork.Complete() > 0)
                 return true;
@@ -89,15 +92,15 @@ namespace Service_Layer.Services
 
         public async Task<bool> Update(int id, RoleDto entity)
         {
-            var roleToPatch = await this._unitOfWork.Role.Get(id);
+            var role = await this._unitOfWork.Role.Get(id);
 
-            if (roleToPatch == null)
+            if (role == null)
                 throw new Exception("Not Found.");
 
-            roleToPatch.Description = entity.Description;
-            roleToPatch.IsActive = entity.IsActive;
+            role.Description = entity.Description;
+            role.IsActive = entity.IsActive;
 
-            _unitOfWork.Role.Update(roleToPatch);
+            _unitOfWork.Role.Update(role);
 
             if (_unitOfWork.Complete() > 0)
                 return true;

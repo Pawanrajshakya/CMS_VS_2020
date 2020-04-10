@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Persistence_Layer.Interfaces;
@@ -20,7 +21,7 @@ namespace Service_Layer.Services
             byte[] passwordHash, passwordSalt;
 
             if (await _unitOfWork.User.UserExists(entity.Username))
-                throw new Exception("Name already exists.");
+                throw new Exception("Username already exists.");
 
             User userToCreate = _mapper.Map<User>(entity);
 
@@ -48,15 +49,17 @@ namespace Service_Layer.Services
 
         public async Task<UserDto> Get(int id)
         {
-            var user = await this._unitOfWork.User.Get(id);
-            UserDto userDto = _mapper.Map<UserDto>(user);
+            var entity = await this._unitOfWork.User.Get(id);
+            if (!entity.IsVisible)
+                return null;
+            UserDto userDto = _mapper.Map<UserDto>(entity);
             return userDto;
         }
 
         public async Task<IEnumerable<UserDto>> GetAll()
         {
             List<UserDto> entityDtos = new List<UserDto>();
-            var entities = await this._unitOfWork.User.GetAll();
+            var entities = (await this._unitOfWork.User.GetAll()).Where(x => x.IsVisible);
             if (entities != null)
             {
                 foreach (var entity in entities)

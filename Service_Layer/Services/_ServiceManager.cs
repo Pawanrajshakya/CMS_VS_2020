@@ -4,11 +4,24 @@ namespace Service_Layer.Services
 {
     public class ServiceManager : IServiceManager
     {
-        public ServiceManager(IBusinessService business, IRoleService role, IUserService user)
+        public ServiceManager(
+            IBusinessService business, 
+            IRoleService role, 
+            IUserService user, 
+            IAccountTypeService accountType,
+            IGroupService group,
+            IAccountService account,
+            IClientService client,
+            IRelationshipService relationship)
         {
             this.Business = business;
             this.Role = role;
             this.User = user;
+            this.AccountType = accountType;
+            this.Group = group;
+            this.Account = account;
+            this.Client = client;
+            this.Relationship = relationship;
         }
 
         public IBusinessService Business { get; private set; }

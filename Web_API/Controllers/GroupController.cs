@@ -4,25 +4,27 @@ using Microsoft.Extensions.Configuration;
 using Service_Layer.Dtos;
 using Service_Layer.Interface;
 
+
 namespace Web_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BusinessController : BaseApiController
+    public class GroupController : BaseApiController
     {
-        public BusinessController(IServiceManager service, IConfiguration config) : base(service, config)
+        public GroupController(IServiceManager service, IConfiguration config) : base(service, config)
         {
         }
+
 
         [HttpGet("get")]
         public async Task<IActionResult> Get()
         {
             try
             {
-                var businesses = await _serviceManager.Business.GetAll();
+                var Groups = await _serviceManager.Group.GetAll();
 
-                if (businesses != null)
-                    return Ok(businesses);
+                if (Groups != null)
+                    return Ok(Groups);
 
                 return NotFound();
             }
@@ -37,10 +39,10 @@ namespace Web_API.Controllers
         {
             try
             {
-                var business = await _serviceManager.Business.Get(id);
+                var Group = await _serviceManager.Group.Get(id);
 
-                if (business != null)
-                    return Ok(business);
+                if (Group != null)
+                    return Ok(Group);
 
                 return BadRequest();
             }
@@ -51,11 +53,11 @@ namespace Web_API.Controllers
         }
 
         [HttpPost("post")]
-        public async Task<IActionResult> Post(BusinessDto businessDto)
+        public async Task<IActionResult> Post(GroupDto GroupDto)
         {
             try
             {
-                if (await _serviceManager.Business.Add(businessDto))
+                if (await _serviceManager.Group.Add(GroupDto))
                     return StatusCode(201);
                 else
                     return BadRequest();
@@ -67,11 +69,11 @@ namespace Web_API.Controllers
         }
 
         [HttpPatch("patch/{id}")]
-        public async Task<IActionResult> Patch(int id, BusinessDto businessDto)
+        public async Task<IActionResult> Patch(int id, GroupDto GroupDto)
         {
             try
             {
-                if (!await _serviceManager.Business.Update(id, businessDto))
+                if (!await _serviceManager.Group.Update(id, GroupDto))
                     return BadRequest();
 
                 return Ok();
@@ -87,7 +89,7 @@ namespace Web_API.Controllers
         {
             try
             {
-                if (await _serviceManager.Business.Remove(id))
+                if (await _serviceManager.Group.Remove(id))
                     return Ok();
 
                 return BadRequest();
@@ -103,7 +105,7 @@ namespace Web_API.Controllers
         {
             try
             {
-                if (await _serviceManager.Business.SoftDelete(id))
+                if (await _serviceManager.Group.SoftDelete(id))
                     return Ok();
 
                 return BadRequest();

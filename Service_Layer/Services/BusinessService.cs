@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Persistence_Layer.Interfaces;
@@ -20,7 +21,7 @@ namespace Service_Layer.Services
 
             if (await _unitOfWork.Business.BusinessExists(entity.Name))
             {
-                throw new Exception("Name already exists.");
+                throw new Exception("Already exists.");
             }
 
             Business entityToSave = _mapper.Map<Business>(entity);
@@ -37,6 +38,8 @@ namespace Service_Layer.Services
         public async Task<BusinessDto> Get(int id)
         {
             var entity = await this._unitOfWork.Business.Get(id);
+            if (!entity.IsVisible)
+                return null;
             BusinessDto businessDto = _mapper.Map<BusinessDto>(entity);
             return businessDto;
 
@@ -45,7 +48,7 @@ namespace Service_Layer.Services
         public async Task<IEnumerable<BusinessDto>> GetAll()
         {
             List<BusinessDto> businessDtos = new List<BusinessDto>();
-            var businesses = await this._unitOfWork.Business.GetAll();
+            var businesses = (await this._unitOfWork.Business.GetAll()).Where(x => x.IsVisible);
             if (businesses != null)
             {
                 foreach (var business in businesses)

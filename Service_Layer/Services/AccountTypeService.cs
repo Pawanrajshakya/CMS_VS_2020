@@ -6,6 +6,7 @@ using Persistence_Layer.Interfaces;
 using Persistence_Layer.Models;
 using Service_Layer.Dtos;
 using Service_Layer.Interface;
+using System.Linq;
 
 namespace Service_Layer.Services
 {
@@ -34,15 +35,17 @@ namespace Service_Layer.Services
 
         public async Task<AccountTypeDto> Get(int id)
         {
-            AccountType entity  = await this._unitOfWork.AccountType.Get(id);
+            AccountType entity = await this._unitOfWork.AccountType.Get(id);
+            if (!entity.IsVisible)
+                return null;
             AccountTypeDto entityDto = _mapper.Map<AccountTypeDto>(entity);
             return entityDto;
         }
 
-        public  async Task<IEnumerable<AccountTypeDto>> GetAll()
+        public async Task<IEnumerable<AccountTypeDto>> GetAll()
         {
             List<AccountTypeDto> entityDtos = new List<AccountTypeDto>();
-            var entities = await this._unitOfWork.AccountType.GetAll();
+            var entities = (await this._unitOfWork.AccountType.GetAll()).Where(x => x.IsVisible);
             if (entities != null)
             {
                 foreach (var entity in entities)
@@ -96,6 +99,8 @@ namespace Service_Layer.Services
 
             entityToUpdate.Description = entity.Description;
             entityToUpdate.IsActive = entity.IsActive;
+            entityToUpdate.Order = entity.Order;
+            entityToUpdate.GroupId = entity.GroupId;
 
             _unitOfWork.AccountType.Update(entityToUpdate);
 

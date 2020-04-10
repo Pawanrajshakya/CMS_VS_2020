@@ -8,9 +8,9 @@ namespace Web_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BusinessController : BaseApiController
+    public class ClientController : BaseApiController
     {
-        public BusinessController(IServiceManager service, IConfiguration config) : base(service, config)
+        public ClientController(IServiceManager service, IConfiguration config) : base(service, config)
         {
         }
 
@@ -19,10 +19,10 @@ namespace Web_API.Controllers
         {
             try
             {
-                var businesses = await _serviceManager.Business.GetAll();
+                var Clients = await _serviceManager.Client.GetAll();
 
-                if (businesses != null)
-                    return Ok(businesses);
+                if (Clients != null)
+                    return Ok(Clients);
 
                 return NotFound();
             }
@@ -37,10 +37,10 @@ namespace Web_API.Controllers
         {
             try
             {
-                var business = await _serviceManager.Business.Get(id);
+                var Client = await _serviceManager.Client.Get(id);
 
-                if (business != null)
-                    return Ok(business);
+                if (Client != null)
+                    return Ok(Client);
 
                 return BadRequest();
             }
@@ -51,11 +51,11 @@ namespace Web_API.Controllers
         }
 
         [HttpPost("post")]
-        public async Task<IActionResult> Post(BusinessDto businessDto)
+        public async Task<IActionResult> Post(ClientDto ClientDto)
         {
             try
             {
-                if (await _serviceManager.Business.Add(businessDto))
+                if (await _serviceManager.Client.Add(ClientDto))
                     return StatusCode(201);
                 else
                     return BadRequest();
@@ -67,11 +67,11 @@ namespace Web_API.Controllers
         }
 
         [HttpPatch("patch/{id}")]
-        public async Task<IActionResult> Patch(int id, BusinessDto businessDto)
+        public async Task<IActionResult> Patch(int id, ClientDto ClientDto)
         {
             try
             {
-                if (!await _serviceManager.Business.Update(id, businessDto))
+                if (!await _serviceManager.Client.Update(id, ClientDto))
                     return BadRequest();
 
                 return Ok();
@@ -87,7 +87,7 @@ namespace Web_API.Controllers
         {
             try
             {
-                if (await _serviceManager.Business.Remove(id))
+                if (await _serviceManager.Client.Remove(id))
                     return Ok();
 
                 return BadRequest();
@@ -103,7 +103,7 @@ namespace Web_API.Controllers
         {
             try
             {
-                if (await _serviceManager.Business.SoftDelete(id))
+                if (await _serviceManager.Client.SoftDelete(id))
                     return Ok();
 
                 return BadRequest();
