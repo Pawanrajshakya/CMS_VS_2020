@@ -98,6 +98,8 @@ namespace Service_Layer.Services
             if (account == null)
                 throw new Exception("Not Found.");
 
+            AddHistory(account);
+
             account.Address1 = entity.Address1;
             account.Address2 = entity.Address2;
             account.AccountNo = entity.AccountNo;
@@ -123,5 +125,10 @@ namespace Service_Layer.Services
             return false;
         }
 
+        private void AddHistory(Account account)
+        {
+            AccountHistory accountHistory = _mapper.Map<AccountHistory>(account);
+            _unitOfWork.AccountHistory.Add(accountHistory);
+        }
     }
 }

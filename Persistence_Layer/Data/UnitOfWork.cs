@@ -12,6 +12,7 @@ namespace Persistence_Layer.Data
         {
             _context = context;
             Account = new AccountRepository(_context);
+            AccountHistory = new AccountHistoryRepository(_context);
             AccountType = new AccountTypeRepository(_context);
             Business = new BusinessRepository(_context);
             Client = new ClientRepository(_context);
@@ -21,9 +22,12 @@ namespace Persistence_Layer.Data
             Transaction = new TransactionRepository(_context);
             TransactionType = new TransactionTypeRepository(_context);
             User = new UserRepository(_context);
+            UserHistory = new UserHistoryRepository(_context);
         }
 
         public IAccountRepository Account { get; private set; }
+
+        public IAccountHistoryRepository AccountHistory { get; private set; }
 
         public IAccountTypeRepository AccountType { get; private set; }
 
@@ -42,6 +46,8 @@ namespace Persistence_Layer.Data
         public ITransactionTypeRepository TransactionType { get; private set; }
 
         public IUserRepository User { get; private set; }
+
+        public IUserHistoryRepository UserHistory {get; private set;}
 
         public int Complete()
         {

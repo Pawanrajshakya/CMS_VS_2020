@@ -5,6 +5,7 @@ namespace Persistence_Layer.Interfaces
     public interface IUnitOfWork : IDisposable
     {
         IAccountRepository Account { get; }
+        IAccountHistoryRepository AccountHistory {get;}
         IAccountTypeRepository AccountType { get; }
         IBusinessRepository Business { get; }
         IClientRepository Client { get; }
@@ -14,6 +15,7 @@ namespace Persistence_Layer.Interfaces
         ITransactionRepository Transaction { get; }
         ITransactionTypeRepository TransactionType { get; }
         IUserRepository User { get; }
+        IUserHistoryRepository UserHistory {get;}
         int Complete();
     }
 }

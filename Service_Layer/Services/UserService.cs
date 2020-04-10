@@ -161,5 +161,11 @@ namespace Service_Layer.Services
                 passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             }
         }
+
+        private void AddHistory(User user)
+        {
+            UserHistory userHistory = _mapper.Map<UserHistory>(user);
+            _unitOfWork.UserHistory.Add(userHistory);
+        }
     }
 }
