@@ -98,7 +98,7 @@ namespace Service_Layer.Services
             if (account == null)
                 throw new Exception("Not Found.");
 
-            AddHistory(account);
+            //AddHistory(account);
 
             account.Address1 = entity.Address1;
             account.Address2 = entity.Address2;

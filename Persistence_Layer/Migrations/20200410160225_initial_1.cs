@@ -3,10 +3,46 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Persistence_Layer.Migrations
 {
-    public partial class create_db : Migration
+    public partial class initial_1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "AccountHistories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AccountNo = table.Column<string>(nullable: true),
+                    ClientId = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Balance = table.Column<decimal>(nullable: false),
+                    AccountTypeId = table.Column<int>(nullable: false),
+                    IsMain = table.Column<bool>(nullable: false),
+                    FirstName = table.Column<string>(maxLength: 255, nullable: true),
+                    MiddleName = table.Column<string>(maxLength: 50, nullable: true),
+                    LastName = table.Column<string>(maxLength: 255, nullable: true),
+                    Phone = table.Column<string>(maxLength: 12, nullable: true),
+                    Email = table.Column<string>(maxLength: 55, nullable: true),
+                    Address1 = table.Column<string>(maxLength: 255, nullable: true),
+                    Address2 = table.Column<string>(maxLength: 255, nullable: true),
+                    State = table.Column<string>(maxLength: 2, nullable: true),
+                    ZipCode = table.Column<string>(maxLength: 20, nullable: true),
+                    RelationshipId = table.Column<int>(nullable: false),
+                    Order = table.Column<int>(nullable: false),
+                    CreatedBy = table.Column<int>(nullable: false),
+                    CreatedDate = table.Column<DateTime>(nullable: false),
+                    LastModifiedBy = table.Column<int>(nullable: false),
+                    LastModifiedDate = table.Column<DateTime>(nullable: false),
+                    IsVisible = table.Column<bool>(nullable: false),
+                    IsActive = table.Column<bool>(nullable: false),
+                    RowVersion = table.Column<byte[]>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AccountHistories", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Businesses",
                 columns: table => new
@@ -91,6 +127,32 @@ namespace Persistence_Layer.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Roles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserHistories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Username = table.Column<string>(nullable: true),
+                    PasswordHash = table.Column<byte[]>(nullable: true),
+                    PasswordSalt = table.Column<byte[]>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    Gender = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    UserRole = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<int>(nullable: false),
+                    CreatedDate = table.Column<DateTime>(nullable: false),
+                    LastModifiedBy = table.Column<int>(nullable: false),
+                    LastModifiedDate = table.Column<DateTime>(nullable: false),
+                    IsVisible = table.Column<bool>(nullable: false),
+                    IsActive = table.Column<bool>(nullable: false),
+                    RowVersion = table.Column<byte[]>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserHistories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -364,7 +426,13 @@ namespace Persistence_Layer.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AccountHistories");
+
+            migrationBuilder.DropTable(
                 name: "Transactions");
+
+            migrationBuilder.DropTable(
+                name: "UserHistories");
 
             migrationBuilder.DropTable(
                 name: "UserRole");

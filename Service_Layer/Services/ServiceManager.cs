@@ -27,12 +27,12 @@ namespace Service_Layer.Services
         public IBusinessService Business { get; private set; }
         public IRoleService Role { get; private set; }
         public IAccountTypeService AccountType { get; private set; }
-        public IAccountService Account { get; set; }
-        public IClientService Client { get; set; }  
-        public IGroupService Group { get; set; }
-        public IRelationshipService Relationship { get; set; }
-        public ITransactionTypeService TransactionType { get; set; }
-        public ITransactionService Transaction { get; set; }
-        public IUserService User { get; set; }
+        public IAccountService Account { get; private set; }
+        public IClientService Client { get; private set; }  
+        public IGroupService Group { get; private set; }
+        public IRelationshipService Relationship { get; private set; }
+        public ITransactionTypeService TransactionType { get; private set; }
+        public ITransactionService Transaction { get; private set; }
+        public IUserService User { get; private set; }
     }
 }
