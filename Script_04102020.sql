@@ -305,5 +305,8 @@ INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
 VALUES (N'20200410160225_initial_1', N'3.1.2');
 
 GO
-
-
+INSERT INTO [Roles] (Description, CreatedBy, CreatedDate, LastModifiedBy, LastModifiedDate, IsVisible, IsActive) VALUES ('Admin', 0, GetDate(), 0, GetDate(), 1,1);
+GO
+INSERT INTO [Roles] (Description, CreatedBy, CreatedDate, LastModifiedBy, LastModifiedDate, IsVisible, IsActive) VALUES ('User', 0, GetDate(), 0, GetDate(), 1,1);
+GO
+INSERT INTO [Users] (Username, Name, PasswordHash,  PasswordSalt, CreatedBy, CreatedDate, LastModifiedBy, LastModifiedDate, IsVisible, IsActive) VALUES ('sa', 'Sys Admin', CONVERT(varbinary,'70a289c0fb41b7103869555082f5c43e9532b9dcd936225013e15f621c2e6dbad839115aafb529de1d546077faedc2f0194893be4b67ca629a20e9ce050f48aa'), CONVERT(varbinary,'5f386e313ccfb1549e4c9b16ee6054ae4be26829e7f5c0fcb1eb9f43eec9bb80d58d6171dc44f5dd3157e3655d44058938823195d0f72a4daf753b2dcccf9e5eb40fd65d3e7e5d7035ac196e359d0b78b2b437d4268b715e5ca47dc71425273e6a3ee41e1ccb5b8c1abb8919edc6155059ea92b26b630075e26c666a2cfcd06e'), 0, GetDate(), 0, GetDate(), 1,1); 
