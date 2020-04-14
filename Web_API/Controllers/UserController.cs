@@ -3,23 +3,27 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Service_Layer.Dtos;
 using Service_Layer.Interface;
+using Web_API.Helpers;
 
 namespace Web_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController: BaseApiController
     {
         public UserController(IServiceManager service, IConfiguration config) : base(service, config)
         {
         }
 
-        [HttpGet("get")]
+        [HttpGet]
+        //[CustomAuthorizationFilter]
         public async Task<IActionResult> Get()
         {
             try
@@ -37,7 +41,7 @@ namespace Web_API.Controllers
             }
         }
 
-        [HttpGet("get/{id}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             try
@@ -120,10 +124,12 @@ namespace Web_API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(UserDto userDto)
+        [AllowAnonymous]
+        public async Task<IActionResult> Register()
         {
             try
             {
+                UserDto userDto = new UserDto { Username = "pawanrajshakya", Password = "password", Name = "Sys Admin", UserRole = new int[]{1} };
                 if (await _serviceManager.User.Add(userDto))
                     return StatusCode(201);
                 else
@@ -136,6 +142,7 @@ namespace Web_API.Controllers
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(UserLoginDto userLoginDto)
         {
             var user = await _serviceManager.User.Login(userLoginDto.Username.ToLower(), userLoginDto.Password);
@@ -148,7 +155,7 @@ namespace Web_API.Controllers
                 new Claim(ClaimTypes.Name, user.Name)
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));
+            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config.GetSection("AppSettings:Token").Value));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
