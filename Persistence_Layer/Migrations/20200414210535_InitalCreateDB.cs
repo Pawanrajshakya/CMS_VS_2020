@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Persistence_Layer.Migrations
 {
-    public partial class initial_1 : Migration
+    public partial class InitalCreateDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -376,6 +376,21 @@ namespace Persistence_Layer.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "CreatedBy", "CreatedDate", "Description", "IsActive", "IsVisible", "LastModifiedBy", "LastModifiedDate" },
+                values: new object[] { 1, 0, new DateTime(2020, 4, 14, 17, 5, 35, 50, DateTimeKind.Local).AddTicks(5650), "Admin", true, true, 0, new DateTime(2020, 4, 14, 17, 5, 35, 68, DateTimeKind.Local).AddTicks(6270) });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "CreatedBy", "CreatedDate", "Description", "IsActive", "IsVisible", "LastModifiedBy", "LastModifiedDate" },
+                values: new object[] { 2, 0, new DateTime(2020, 4, 14, 17, 5, 35, 68, DateTimeKind.Local).AddTicks(9880), "User", true, true, 0, new DateTime(2020, 4, 14, 17, 5, 35, 68, DateTimeKind.Local).AddTicks(9920) });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "CreatedBy", "CreatedDate", "Description", "IsActive", "IsVisible", "LastModifiedBy", "LastModifiedDate" },
+                values: new object[] { 3, 0, new DateTime(2020, 4, 14, 17, 5, 35, 68, DateTimeKind.Local).AddTicks(9990), "Viewer", true, true, 0, new DateTime(2020, 4, 14, 17, 5, 35, 69, DateTimeKind.Local) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Account_AccountTypeId",

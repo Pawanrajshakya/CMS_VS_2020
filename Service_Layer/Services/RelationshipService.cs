@@ -16,7 +16,7 @@ namespace Service_Layer.Services
         {
         }
 
-        public async Task<bool> Add(RelationshipDto entity)
+        public async Task<bool> Add(RelationshipToSaveDto entity)
         {
             if (await _unitOfWork.Relationship.RelationshipExists(entity.Description))
             {
@@ -90,7 +90,7 @@ namespace Service_Layer.Services
             return false;
         }
 
-        public async Task<bool> Update(int id, RelationshipDto entity)
+        public async Task<bool> Update(int id, RelationshipToEditDto entity)
         {
             var Relationship = await this._unitOfWork.Relationship.Get(id);
 

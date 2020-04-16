@@ -59,7 +59,7 @@ namespace Persistence_Layer.Models
         public int RelationshipId { get; set; } //Relationship with main account
         #endregion
 
-        public List<Transaction> Transactions { get; set; }
+        //public List<Transaction> Transactions { get; set; }
 
         public int Order { get; set; }
     }

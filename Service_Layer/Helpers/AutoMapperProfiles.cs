@@ -18,8 +18,8 @@ namespace Service_Layer.Helpers
             //Client
             CreateMap<Persistence_Layer.Models.Client, ClientDto>();
             CreateMap<ClientDto, Persistence_Layer.Models.Client>()
-                .ForMember(x => x.Business, opt => opt.Ignore())
-                .ForMember(x => x.Accounts, opt => opt.Ignore());
+                .ForMember(x => x.Business, opt => opt.Ignore());
+                //.ForMember(x => x.Accounts, opt => opt.Ignore());
             
             //Role
             CreateMap<Persistence_Layer.Models.Role, Service_Layer.Dtos.RoleDto>();
@@ -42,8 +42,8 @@ namespace Service_Layer.Helpers
             CreateMap<Service_Layer.Dtos.AccountDto, Persistence_Layer.Models.Account>()
             .ForMember(x => x.Client, opt => opt.Ignore())
             .ForMember(x => x.AccountType, opt => opt.Ignore())
-            .ForMember(x => x.Relationship, opt => opt.Ignore())
-            .ForMember(x => x.Transactions, opt => opt.Ignore());
+            .ForMember(x => x.Relationship, opt => opt.Ignore());
+            //.ForMember(x => x.Transactions, opt => opt.Ignore());
             
             //AccountHistory
             CreateMap<Persistence_Layer.Models.AccountHistory, Service_Layer.Dtos.AccountHistoryDto>();

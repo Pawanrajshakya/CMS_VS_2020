@@ -4,6 +4,7 @@ namespace Service_Layer.Dtos
 {
     public class BusinessDto
     {
+        public int Id { get; set; }
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
         [Required(ErrorMessage = "Address1 is required")]

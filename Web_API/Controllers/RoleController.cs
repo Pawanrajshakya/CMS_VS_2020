@@ -51,7 +51,7 @@ namespace Web_API.Controllers
         }
 
         [HttpPost("post")]
-        public async Task<IActionResult> Post(RoleDto roleDto)
+        public async Task<IActionResult> Post(RoleToSaveDto roleDto)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace Web_API.Controllers
         }
 
         [HttpPatch("patch/{id}")]
-        public async Task<IActionResult> Patch(int id, RoleDto roleDto)
+        public async Task<IActionResult> Patch(int id, RoleToEditDto roleDto)
         {
             try
             {

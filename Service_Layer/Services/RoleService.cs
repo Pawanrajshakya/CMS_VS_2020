@@ -16,7 +16,7 @@ namespace Service_Layer.Services
         {
         }
 
-        public async Task<bool> Add(RoleDto entity)
+        public async Task<bool> Add(RoleToSaveDto entity)
         {
             if (await _unitOfWork.Role.RoleExists(entity.Description))
             {
@@ -90,7 +90,7 @@ namespace Service_Layer.Services
             return false;
         }
 
-        public async Task<bool> Update(int id, RoleDto entity)
+        public async Task<bool> Update(int id, RoleToEditDto entity)
         {
             var role = await this._unitOfWork.Role.Get(id);
 

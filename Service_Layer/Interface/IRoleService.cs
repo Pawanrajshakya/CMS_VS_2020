@@ -4,7 +4,7 @@ using Service_Layer.Dtos;
 
 namespace Service_Layer.Interface
 {
-    public interface IRoleService: IService<RoleDto>
+    public interface IRoleService: IDeleteService, IAddService<RoleToSaveDto>, IUpdateService<RoleToEditDto>, IGetService<RoleDto>
     {
     }
 }

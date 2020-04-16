@@ -16,7 +16,7 @@ namespace Service_Layer.Services
         {
         }
 
-        public async Task<bool> Add(BusinessDto entity)
+        public async Task<bool> Add(BusinessToSaveDto entity)
         {
 
             if (await _unitOfWork.Business.BusinessExists(entity.Name))
@@ -91,7 +91,7 @@ namespace Service_Layer.Services
 
             return false;
         }
-        public async Task<bool> Update(int id, BusinessDto entity)
+        public async Task<bool> Update(int id, BusinessToEditDto entity)
         {
             var businessToPatch = await this._unitOfWork.Business.Get(id);
 

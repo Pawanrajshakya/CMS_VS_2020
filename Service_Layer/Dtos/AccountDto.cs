@@ -2,6 +2,8 @@ namespace Service_Layer.Dtos
 {
     public class AccountDto
     {
+
+        public int Id { get; set; }
         public string AccountNo { get; set; }
         public int ClientId { get; set; }
         public decimal Balance { get; private set; }

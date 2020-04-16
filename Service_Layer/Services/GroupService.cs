@@ -17,7 +17,7 @@ namespace Service_Layer.Services
 
         }
 
-        public async Task<bool> Add(GroupDto entity)
+        public async Task<bool> Add(GroupToSaveDto entity)
         {
             if (await _unitOfWork.Group.GroupExists(entity.Description))
             {
@@ -91,7 +91,7 @@ namespace Service_Layer.Services
             return false;
         }
 
-        public async Task<bool> Update(int id, GroupDto entity)
+        public async Task<bool> Update(int id, GroupToEditDto entity)
         {
             var group = await this._unitOfWork.Group.Get(id);
 

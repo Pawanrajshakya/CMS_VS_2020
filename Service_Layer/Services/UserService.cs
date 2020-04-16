@@ -16,7 +16,7 @@ namespace Service_Layer.Services
         {
         }
 
-        public async Task<bool> Add(UserDto entity)
+        public async Task<bool> Add(UserToSaveDto entity)
         {
             byte[] passwordHash, passwordSalt;
 
@@ -28,10 +28,12 @@ namespace Service_Layer.Services
             CreatePasswordHash(entity.Password, out passwordHash, out passwordSalt);
             userToCreate.PasswordHash = passwordHash;
             userToCreate.PasswordSalt = passwordSalt;
+            userToCreate.IsActive = true;
+            userToCreate.IsVisible = true;
 
             userToCreate.UserRole = new System.Collections.Generic.List<UserRole>();
 
-            if (entity.UserRole.Length > 0)
+            if (entity.UserRole.Count() > 0)
             {
                 foreach (var userRole in entity.UserRole)
                 {
@@ -49,25 +51,33 @@ namespace Service_Layer.Services
 
         public async Task<UserDto> Get(int id)
         {
-            var entity = await this._unitOfWork.User.Get(id);
-            if (!entity.IsVisible)
+            var user = await this._unitOfWork.User.Get(id);
+
+            if (user == null || !user.IsVisible)
                 return null;
-            UserDto userDto = _mapper.Map<UserDto>(entity);
+
+            UserDto userDto = _mapper.Map<UserDto>(user);
+
+            await GetUserRoles(user.Id, userDto);
+
             return userDto;
         }
 
         public async Task<IEnumerable<UserDto>> GetAll()
         {
-            List<UserDto> entityDtos = new List<UserDto>();
-            var entities = (await this._unitOfWork.User.GetAll()).Where(x => x.IsVisible);
-            if (entities != null)
+            List<UserDto> userDtos = new List<UserDto>();
+            var users = (await this._unitOfWork.User.GetAll()).Where(x => x.IsVisible);
+            if (users != null)
             {
-                foreach (var entity in entities)
+
+                foreach (var user in users)
                 {
-                    entityDtos.Add(_mapper.Map<UserDto>(entity));
+                    UserDto userDto = _mapper.Map<UserDto>(user);
+                    await GetUserRoles(user.Id, userDto);
+                    userDtos.Add(userDto);
                 }
             }
-            return entityDtos;
+            return userDtos;
         }
 
         public async Task<bool> Remove(int id)
@@ -104,7 +114,7 @@ namespace Service_Layer.Services
             return false;
         }
 
-        public async Task<bool> Update(int id, UserDto entity)
+        public async Task<bool> Update(int id, UserToEditDto entity)
         {
             var entityToUpdate = await this._unitOfWork.User.Get(id);
 
@@ -126,7 +136,7 @@ namespace Service_Layer.Services
         }
         public async Task<UserDto> Login(string username, string password)
         {
-            var user = await _unitOfWork.User.Find(x=>x.Username == username);
+            var user = await _unitOfWork.User.Find(x => x.Username == username);
 
             if (user == null)
                 return null;
@@ -136,7 +146,21 @@ namespace Service_Layer.Services
 
             UserDto userDto = _mapper.Map<UserDto>(user);
 
+            await GetUserRoles(user.Id, userDto);
+
             return userDto;
+        }
+
+        private async Task GetUserRoles(int id, UserDto userDto)
+        {
+            var userRoles = await _unitOfWork.User.GetUserRoles(id);
+            if (userRoles.Count() > 0)
+            {
+                foreach (var userRole in userRoles)
+                {
+                    userDto.UserRole.Add(userRole.RoleId);
+                }
+            }
         }
 
         private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)

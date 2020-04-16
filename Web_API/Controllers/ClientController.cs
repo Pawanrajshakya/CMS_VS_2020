@@ -51,7 +51,7 @@ namespace Web_API.Controllers
         }
 
         [HttpPost("post")]
-        public async Task<IActionResult> Post(ClientDto ClientDto)
+        public async Task<IActionResult> Post(ClientToSaveDto ClientDto)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace Web_API.Controllers
         }
 
         [HttpPatch("patch/{id}")]
-        public async Task<IActionResult> Patch(int id, ClientDto ClientDto)
+        public async Task<IActionResult> Patch(int id, ClientToEditDto ClientDto)
         {
             try
             {

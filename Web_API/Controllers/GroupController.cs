@@ -53,7 +53,7 @@ namespace Web_API.Controllers
         }
 
         [HttpPost("post")]
-        public async Task<IActionResult> Post(GroupDto GroupDto)
+        public async Task<IActionResult> Post(GroupToSaveDto GroupDto)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace Web_API.Controllers
         }
 
         [HttpPatch("patch/{id}")]
-        public async Task<IActionResult> Patch(int id, GroupDto GroupDto)
+        public async Task<IActionResult> Patch(int id, GroupToEditDto GroupDto)
         {
             try
             {

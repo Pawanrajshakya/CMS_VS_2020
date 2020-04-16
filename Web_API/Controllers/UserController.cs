@@ -16,14 +16,14 @@ namespace Web_API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class UserController: BaseApiController
+    public class UserController : BaseApiController
     {
         public UserController(IServiceManager service, IConfiguration config) : base(service, config)
         {
         }
 
         [HttpGet]
-        //[CustomAuthorizationFilter]
+        [CustomAuthorizationFilter]
         public async Task<IActionResult> Get()
         {
             try
@@ -59,8 +59,8 @@ namespace Web_API.Controllers
             }
         }
 
-        [HttpPost("post")]
-        public async Task<IActionResult> Post(UserDto userDto)
+        [HttpPost]
+        public async Task<IActionResult> Post(UserToSaveDto userDto)
         {
             try
             {
@@ -75,8 +75,8 @@ namespace Web_API.Controllers
             }
         }
 
-        [HttpPatch("patch/{id}")]
-        public async Task<IActionResult> Patch(int id, UserDto userDto)
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> Patch(int id, UserToEditDto userDto)
         {
             try
             {
@@ -91,28 +91,13 @@ namespace Web_API.Controllers
             }
         }
 
-        [HttpDelete("delete/{id}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                if (await _serviceManager.User.Remove(id))
-                    return Ok();
-
-                return BadRequest();
-            }
-            catch (System.Exception e)
-            {
-                return HandleException(e);
-            }
-        }
-
-        [HttpPost("softdelete/{id}")]
-        public async Task<IActionResult> SoftDelete(int id)
-        {
-            try
-            {
                 if (await _serviceManager.User.SoftDelete(id))
+                //if (await _serviceManager.User.Remove(id))
                     return Ok();
 
                 return BadRequest();
@@ -122,6 +107,22 @@ namespace Web_API.Controllers
                 return HandleException(e);
             }
         }
+
+        // [HttpPost("softdelete/{id}")]
+        // public async Task<IActionResult> SoftDelete(int id)
+        // {
+        //     try
+        //     {
+        //         if (await _serviceManager.User.SoftDelete(id))
+        //             return Ok();
+
+        //         return BadRequest();
+        //     }
+        //     catch (System.Exception e)
+        //     {
+        //         return HandleException(e);
+        //     }
+        // }
 
         [HttpPost("register")]
         [AllowAnonymous]
@@ -129,7 +130,7 @@ namespace Web_API.Controllers
         {
             try
             {
-                UserDto userDto = new UserDto { Username = "pawanrajshakya", Password = "password", Name = "Sys Admin", UserRole = new int[]{1} };
+                UserToSaveDto userDto = new UserToSaveDto { Username = "pawanshakya", Password = "password", Name = "Sys Admin", UserRole = new System.Collections.Generic.List<int> { 1, 2 } };
                 if (await _serviceManager.User.Add(userDto))
                     return StatusCode(201);
                 else
@@ -149,10 +150,24 @@ namespace Web_API.Controllers
 
             if (user == null)
                 return Unauthorized();
+            JwtSecurityTokenHandler tokenHandler;
+            SecurityToken token;
+            GetToken(user, out tokenHandler, out token);
+
+            return Ok(new
+            {
+                token = tokenHandler.WriteToken(token)
+            });
+        }
+
+        private void GetToken(UserDto user, out JwtSecurityTokenHandler tokenHandler, out SecurityToken token)
+        {
+            var userRoles = string.Join(",", user.UserRole);
 
             var claims = new[]{
                 new Claim(ClaimTypes.NameIdentifier, user.Username),
-                new Claim(ClaimTypes.Name, user.Name)
+                new Claim(ClaimTypes.Name, user.Name),
+                new Claim(ClaimTypes.Role, userRoles)
             };
 
             var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config.GetSection("AppSettings:Token").Value));
@@ -166,14 +181,8 @@ namespace Web_API.Controllers
                 SigningCredentials = creds
             };
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-
-            return Ok(new
-            {
-                token = tokenHandler.WriteToken(token)
-            });
+            tokenHandler = new JwtSecurityTokenHandler();
+            token = tokenHandler.CreateToken(tokenDescriptor);
         }
     }
 }

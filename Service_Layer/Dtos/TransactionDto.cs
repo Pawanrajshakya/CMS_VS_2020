@@ -5,6 +5,7 @@ namespace Service_Layer.Dtos
 {
     public class TransactionDto
     {
+        public int Id { get; set; }
         [Required]
         public DateTime TransactionDate { get; set; }
         public decimal Amount { get; set; }

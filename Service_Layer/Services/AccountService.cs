@@ -16,7 +16,7 @@ namespace Service_Layer.Services
         {
         }
 
-        public async Task<bool> Add(AccountDto entity)
+        public async Task<bool> Add(AccountToSaveDto entity)
         {
 
             if (await _unitOfWork.Account.AccountExists(entity.AccountNo))
@@ -91,7 +91,7 @@ namespace Service_Layer.Services
 
             return false;
         }
-        public async Task<bool> Update(int id, AccountDto entity)
+        public async Task<bool> Update(int id, AccountToEditDto entity)
         {
             var account = await this._unitOfWork.Account.Get(id);
 

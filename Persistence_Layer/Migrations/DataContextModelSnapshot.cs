@@ -316,6 +316,23 @@ namespace Persistence_Layer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Businesses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address1 = "Address 1",
+                            Address2 = "Address 2",
+                            CreatedBy = 0,
+                            CreatedDate = new DateTime(2020, 4, 14, 17, 14, 38, 832, DateTimeKind.Local).AddTicks(8550),
+                            IsActive = true,
+                            IsVisible = true,
+                            LastModifiedBy = 0,
+                            LastModifiedDate = new DateTime(2020, 4, 14, 17, 14, 38, 832, DateTimeKind.Local).AddTicks(8570),
+                            Name = "Business Name",
+                            State = "zz",
+                            ZipCode = "zzzzz"
+                        });
                 });
 
             modelBuilder.Entity("Persistence_Layer.Models.Client", b =>
@@ -401,6 +418,20 @@ namespace Persistence_Layer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Groups");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedBy = 0,
+                            CreatedDate = new DateTime(2020, 4, 14, 17, 14, 38, 833, DateTimeKind.Local).AddTicks(2360),
+                            Description = "New Group",
+                            IsActive = true,
+                            IsVisible = true,
+                            LastModifiedBy = 0,
+                            LastModifiedDate = new DateTime(2020, 4, 14, 17, 14, 38, 833, DateTimeKind.Local).AddTicks(2370),
+                            Order = 0
+                        });
                 });
 
             modelBuilder.Entity("Persistence_Layer.Models.Relationship", b =>
@@ -479,6 +510,41 @@ namespace Persistence_Layer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedBy = 0,
+                            CreatedDate = new DateTime(2020, 4, 14, 17, 14, 38, 815, DateTimeKind.Local).AddTicks(1770),
+                            Description = "Admin",
+                            IsActive = true,
+                            IsVisible = true,
+                            LastModifiedBy = 0,
+                            LastModifiedDate = new DateTime(2020, 4, 14, 17, 14, 38, 830, DateTimeKind.Local).AddTicks(7400)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedBy = 0,
+                            CreatedDate = new DateTime(2020, 4, 14, 17, 14, 38, 831, DateTimeKind.Local).AddTicks(1400),
+                            Description = "User",
+                            IsActive = true,
+                            IsVisible = true,
+                            LastModifiedBy = 0,
+                            LastModifiedDate = new DateTime(2020, 4, 14, 17, 14, 38, 831, DateTimeKind.Local).AddTicks(1430)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedBy = 0,
+                            CreatedDate = new DateTime(2020, 4, 14, 17, 14, 38, 831, DateTimeKind.Local).AddTicks(1510),
+                            Description = "Viewer",
+                            IsActive = true,
+                            IsVisible = true,
+                            LastModifiedBy = 0,
+                            LastModifiedDate = new DateTime(2020, 4, 14, 17, 14, 38, 831, DateTimeKind.Local).AddTicks(1510)
+                        });
                 });
 
             modelBuilder.Entity("Persistence_Layer.Models.Transaction", b =>
@@ -714,7 +780,7 @@ namespace Persistence_Layer.Migrations
                         .IsRequired();
 
                     b.HasOne("Persistence_Layer.Models.Client", "Client")
-                        .WithMany("Accounts")
+                        .WithMany()
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -729,7 +795,7 @@ namespace Persistence_Layer.Migrations
             modelBuilder.Entity("Persistence_Layer.Models.AccountType", b =>
                 {
                     b.HasOne("Persistence_Layer.Models.Group", "Group")
-                        .WithMany("AccountTypes")
+                        .WithMany()
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -747,7 +813,7 @@ namespace Persistence_Layer.Migrations
             modelBuilder.Entity("Persistence_Layer.Models.Transaction", b =>
                 {
                     b.HasOne("Persistence_Layer.Models.Account", "Account")
-                        .WithMany("Transactions")
+                        .WithMany()
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

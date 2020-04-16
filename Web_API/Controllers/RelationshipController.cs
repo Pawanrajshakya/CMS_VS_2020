@@ -51,7 +51,7 @@ namespace Web_API.Controllers
         }
 
         [HttpPost("post")]
-        public async Task<IActionResult> Post(RelationshipDto RelationshipDto)
+        public async Task<IActionResult> Post(RelationshipToSaveDto RelationshipDto)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace Web_API.Controllers
         }
 
         [HttpPatch("patch/{id}")]
-        public async Task<IActionResult> Patch(int id, RelationshipDto RelationshipDto)
+        public async Task<IActionResult> Patch(int id, RelationshipToEditDto RelationshipDto)
         {
             try
             {

@@ -16,7 +16,7 @@ namespace Service_Layer.Services
         {
         }
 
-        public async Task<bool> Add(ClientDto entity)
+        public async Task<bool> Add(ClientToSaveDto entity)
         {
             if (await _unitOfWork.Client.ClientExists(entity.Name))
             {
@@ -90,7 +90,7 @@ namespace Service_Layer.Services
             return false;
         }
 
-        public async Task<bool> Update(int id, ClientDto entity)
+        public async Task<bool> Update(int id, ClientToEditDto entity)
         {
             var Client = await this._unitOfWork.Client.Get(id);
 

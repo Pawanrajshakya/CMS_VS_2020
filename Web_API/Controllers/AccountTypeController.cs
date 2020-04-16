@@ -52,7 +52,7 @@ namespace Web_API.Controllers
         }
 
         [HttpPost("post")]
-        public async Task<IActionResult> Post(AccountTypeDto AccountTypeDto)
+        public async Task<IActionResult> Post(AccountTypeToSaveDto AccountTypeDto)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace Web_API.Controllers
         }
 
         [HttpPatch("patch/{id}")]
-        public async Task<IActionResult> Patch(int id, AccountTypeDto AccountTypeDto)
+        public async Task<IActionResult> Patch(int id, AccountTypeToEditDto AccountTypeDto)
         {
             try
             {
