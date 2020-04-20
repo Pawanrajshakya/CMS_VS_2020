@@ -9,7 +9,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Service_Layer.Dtos;
 using Service_Layer.Interface;
-using Web_API.Helpers;
 
 namespace Web_API.Controllers
 {
@@ -23,13 +22,12 @@ namespace Web_API.Controllers
         }
 
         [HttpGet]
-        [CustomAuthorizationFilter]
         public async Task<IActionResult> Get()
         {
             try
             {
                 var users = await _serviceManager.User.GetAll();
-
+                
                 if (users != null)
                     return Ok(users);
 
@@ -46,6 +44,7 @@ namespace Web_API.Controllers
         {
             try
             {
+                //var username  = CurrentUser.Instance.User1.Username;
                 var user = await _serviceManager.User.Get(id);
 
                 if (user != null)
@@ -60,10 +59,14 @@ namespace Web_API.Controllers
         }
 
         [HttpPost]
+        //[CustomAuthorizationFilter]
+
         public async Task<IActionResult> Post(UserToSaveDto userDto)
         {
             try
             {
+                //userDto.Email = CurrentUser.Instance.User1.Username;
+                //var user = CurrentUser.Instance.User.Id;
                 if (await _serviceManager.User.Add(userDto))
                     return StatusCode(201);
                 else
@@ -165,8 +168,8 @@ namespace Web_API.Controllers
             var userRoles = string.Join(",", user.UserRole);
 
             var claims = new[]{
-                new Claim(ClaimTypes.NameIdentifier, user.Username),
-                new Claim(ClaimTypes.Name, user.Name),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Username),
                 new Claim(ClaimTypes.Role, userRoles)
             };
 

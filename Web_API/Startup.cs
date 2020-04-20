@@ -47,6 +47,7 @@ namespace Web_API
             });
 
             services.AddCors();
+            //services.AddHttpContextAccessor();
             services.AddAutoMapper(typeof(IBusinessService));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IServiceManager, ServiceManager>();
@@ -71,6 +72,7 @@ namespace Web_API
                     ValidateAudience = false
                 };
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

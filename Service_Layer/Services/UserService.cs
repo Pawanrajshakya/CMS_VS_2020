@@ -191,5 +191,16 @@ namespace Service_Layer.Services
             UserHistory userHistory = _mapper.Map<UserHistory>(user);
             _unitOfWork.UserHistory.Add(userHistory);
         }
+
+        public async Task<UserDto> FindBy(string username)
+        {
+            var user = await _unitOfWork.User.Find(x=>x.Username.ToLower() == username.ToLower());
+            
+            UserDto userDto = _mapper.Map<UserDto>(user);
+
+            await GetUserRoles(user.Id, userDto);
+
+            return userDto;
+        }
     }
 }
